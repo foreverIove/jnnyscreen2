@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vite App</title>
+    <style>
+       /* #mouse {
+            width: 30px;
+            height: 30px;
+            position: fixed;
+            pointer-events: none; 
+            z-index: 999999999999999999;
+          } */
+    </style>
+  </head>
+  <!-- onmousemove="coordinates(event)" -->
+  <body >
+    <!-- <div id="mouse">
+      <img src="/sb1.png" alt="" style="width: 100%; height: 100%;">
+    </div> -->
+    <div id="app"></div>
+    <script type="module" src="/src/main.ts"></script>
+    <script type="text/javascript">
+      var mouse = document.getElementById("mouse");
+      let x = 0, y = 0;
+
+      function coordinates(event) {
+        // 每次触发 mousemove 时，更新鼠标的 x 和 y 坐标
+        x = event.clientX;
+        y = event.clientY;
+
+        // 使用 requestAnimationFrame 来更新位置
+        window.requestAnimationFrame(updateMousePosition);
+      }
+
+      function updateMousePosition() {
+        // 更新鼠标图片的位置
+        mouse.style.transform = `translate(-50%, -50%) translate(${x + 8}px, ${y + 12}px)`;
+      }
+    </script>
+  </body>
+</html>

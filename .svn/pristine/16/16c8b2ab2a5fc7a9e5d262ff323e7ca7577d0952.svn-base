@@ -1,0 +1,1 @@
+.scrollView{width:200px;height:300px;background-color:red;overflow-y:scroll;position:relative}.item{height:50px}.list{position:absolute;top:0;left:0}.scrollView::-webkit-scrollbar{width:0!important}.scrollView{-ms-overflow-style:none}.scrollView{overflow:-moz-scrollbars-none}

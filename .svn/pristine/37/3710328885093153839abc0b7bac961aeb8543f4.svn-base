@@ -1,0 +1,13 @@
+{
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  // #每次保存的时候自动格式化
+  "editor.formatOnSave": true,
+  // 使用vetur格式化
+  "editor.defaultFormatter": "octref.vetur",
+  // js不使用vetur
+  "vetur.format.defaultFormatter.js": "none",
+  // 使用eslint格式化代码
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
