@@ -94,7 +94,6 @@ onMounted(() => {})
   background-size: 100% 100%;
 }
 .leftOne {
-  background: url(@/assets/business/logo1.png) 100% no-repeat;
   background-size: 100% 60%;
 
   background-position-y: 80%;
