@@ -20,7 +20,7 @@
             z-index: 99999999;
             text-align: center;
           ">
-          实时充电人数：-
+          实时充电人数：30
         </div>
         <Map :isShowArea="true" :RLData="RLData" :MapSure="'SSCDuser'"></Map>
       </div>
