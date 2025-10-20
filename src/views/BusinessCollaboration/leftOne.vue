@@ -91,9 +91,11 @@ onMounted(() => {})
 
 <style lang="less" scoped>
 .leftOnelogo2 {
+  background: url(@/assets/business/leftonelogoo.png) 100% no-repeat;
   background-size: 100% 100%;
 }
 .leftOne {
+  background: url(@/assets/business/logoo.png) 100% no-repeat;
   background-size: 100% 60%;
 
   background-position-y: 80%;
