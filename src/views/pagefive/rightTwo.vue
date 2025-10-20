@@ -154,7 +154,7 @@ const getChart = () => {
         // 其他配置...
       },
       {
-        name: '审限内结案率',
+        name: '-',
         showBackground: true,
         backgroundStyle: {
           // color: 'rgba(21,136,209,0.6)'
