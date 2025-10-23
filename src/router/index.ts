@@ -9,7 +9,7 @@ const router = createRouter({
       path: '/',
       //  重定向
       // component: Screen
-      redirect: '/screen/frontpage'
+      redirect: '/screen/PageOne'
     },
     {
       path: '/screen',
