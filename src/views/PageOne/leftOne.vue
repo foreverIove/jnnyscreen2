@@ -173,9 +173,9 @@ const getChart = () => {
         boundaryGap: true,
         axisLabel: {
           textStyle: {
-            color: 'rgba(233, 240, 255, 1)',
+            color: '#11FFFB',
             fontWeight: 500,
-            fontSize: '16'
+            fontSize: 12
           }
         },
         axisTick: {
@@ -197,9 +197,9 @@ const getChart = () => {
         axisLabel: {
           show: false,
           textStyle: {
-            color: 'rgba(233, 240, 255, 1)',
+            color: '#11FFFB',
             fontWeight: 500,
-            fontSize: '16'
+            fontSize: '12'
           }
         },
         axisTick: {
@@ -236,7 +236,7 @@ const getChart = () => {
           show: true,
           textStyle: {
             color: 'rgba(195, 213, 248, 1)',
-            fontSize: 22
+            fontSize: 12
           },
           formatter: '{value} '
         }
@@ -273,8 +273,8 @@ const getChart = () => {
           show: true,
           formatter: '{value} ',
           textStyle: {
-            color: 'rgba(195, 213, 248, 1)',
-            fontSize: 22
+            color: '#11FFFB',
+            fontSize: 12
           }
         }
       }

@@ -209,7 +209,7 @@ const getChart = () => {
     },
 
     grid: {
-      top: '10%',
+      top: '20%',
       left: '3%',
       right: '2%',
       bottom: '18%',
@@ -228,10 +228,10 @@ const getChart = () => {
           interval: 0,
           align: 'center',
           margin: 10,
-          color: '#fff',
+          color: '#A5C9DB',
           rotate: 0,
           textStyle: {
-            fontSize: 14
+            fontSize: 12
           }
         },
         splitLine: {
@@ -248,10 +248,10 @@ const getChart = () => {
     yAxis: [
       {
         type: 'value',
-        name: '（元）',
+        name: '单位(元)',
         nameTextStyle: {
-          //y轴上方单位的颜色
-          color: '#fff'
+          color: '#fff',
+          fontSize: 12
         },
         // splitNumber: 6,
         axisLine: {
@@ -268,9 +268,9 @@ const getChart = () => {
           }
         },
         axisLabel: {
-          color: '#fff',
+          color: '#A5C9DB',
           textStyle: {
-            fontSize: 14
+            fontSize: 12
           }
         },
         axisTick: {

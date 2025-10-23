@@ -255,10 +255,10 @@ const getChart = () => {
           interval: 1,
           align: 'center',
           margin: 10,
-          color: 'rgb(139, 143, 147)',
+          color: '#A5C9DB',
           rotate: 0,
           textStyle: {
-            fontSize: 14
+            fontSize: 12
           }
         },
         splitLine: {
@@ -275,10 +275,10 @@ const getChart = () => {
     yAxis: [
       {
         type: 'value',
-        name: '（个）',
+        name: '单位(个)',
         nameTextStyle: {
-          //y轴上方单位的颜色
-          color: 'rgb(139, 143, 147)'
+          color: '#fff',
+          fontSize: 12
         },
         // splitNumber: 6,
         axisLine: {
@@ -295,9 +295,9 @@ const getChart = () => {
           }
         },
         axisLabel: {
-          color: 'rgb(139, 143, 147)',
+          color: '#A5C9DB',
           textStyle: {
-            fontSize: 14
+            fontSize: 12
           }
         },
         axisTick: {
@@ -329,6 +329,7 @@ svg {
 .chart-flow {
   height: 100%;
   width: 100%;
+  z-index: 9999;
   &::before {
     content: ' ';
     width: 169px;

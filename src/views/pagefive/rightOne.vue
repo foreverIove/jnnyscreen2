@@ -18,11 +18,11 @@ const imgList = [
   '//img.isqqw.com/profile/upload/2023/10/25/4e93cf77-ca50-4cfd-862f-513be3479112.png'
 ]
 const data = [
-  { name: '济南特来电新能源有限公司', value: 94901, num: 94901 },
-  { name: '国网（山东）电动汽车服务有限公司', value: 42017, num: 42017 },
+  { name: '特来电', value: 94901, num: 94901 },
+  { name: '国网', value: 42017, num: 42017 },
   { name: '星星充电', value: 41236, num: 41236 },
-  { name: '山东科耐新能源有限公司', value: 38258, num: 38258 },
-  { name: '济南碧辟小桔新能源有限责任公司', value: 37578, num: 37578 }
+  { name: '科耐新能源', value: 38258, num: 38258 },
+  { name: '小桔新能源', value: 37578, num: 37578 }
 ]
 // y轴数据
 const ydata = data.map((item) => item.name)
@@ -53,6 +53,7 @@ const getChart = () => {
       // 图标
       {
         type: 'category',
+
         data: ydata,
         inverse: true,
         axisLabel: {
@@ -127,7 +128,7 @@ const getChart = () => {
         splitLine: 'none',
         axisTick: 'none',
         axisLine: 'none',
-        data: data.map((item) => item.value),
+        data: data.map((item) => item.value + '个'),
         inverse: true,
         axisLabel: {
           show: true,

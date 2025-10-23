@@ -14,7 +14,7 @@ const router = createRouter({
     {
       path: '/screen',
       component: Screen,
-      redirect: '/screen/frontpage',
+      redirect: '/screen/PageOne',
       children: [
         {
           name: 'PageOne',

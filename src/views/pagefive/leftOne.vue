@@ -197,7 +197,7 @@ const getChart = () => {
         },
         axisLabel: {
           textStyle: {
-            color: 'rgba(198, 207, 255, 1)',
+            color: '#11FFFB',
             fontSize: 12
           },
           // color: '#fff',
@@ -219,6 +219,11 @@ const getChart = () => {
     yAxis: [
       {
         type: 'value',
+        name: '单位(个)',
+        nameTextStyle: {
+          color: '#fff',
+          fontSize: 12
+        },
         axisLine: {
           show: true
         },
@@ -246,7 +251,7 @@ const getChart = () => {
           // margin: 10,
           textStyle: {
             fontSize: 12,
-            color: 'rgba(198, 207, 255, 1)'
+            color: '#11FFFB'
           }
         },
         axisTick: {
@@ -277,7 +282,7 @@ const getChart = () => {
           position: 'top',
           textStyle: {
             color: 'rgba(1, 251, 246, 1)',
-            fontSize: 16
+            fontSize: 12
           }
         },
         itemStyle: {

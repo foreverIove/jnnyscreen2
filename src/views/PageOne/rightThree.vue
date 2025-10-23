@@ -272,7 +272,7 @@ const getChart = () => {
         // margin: 8,
         textStyle: {
           show: true,
-          color: '#fff',
+          color: '#A5C9DB',
           fontSize: '12'
         }
       }
@@ -314,7 +314,7 @@ const getChart = () => {
       axisLabel: {
         textStyle: {
           show: true,
-          color: '#11FFFB',
+          color: '#A5C9DB',
           fontSize: '12'
         }
       }

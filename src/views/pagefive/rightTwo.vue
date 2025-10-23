@@ -18,16 +18,16 @@ sxnja.map((value) => {
 })
 console.log(minArray)
 let xaxisData = [
-  '智充U选飞跃大道重卡充电站',
+  '智充U选',
   '泰钢汶汇港物流园',
-  '特来电济南自贸大厦（济南东高速口）充电站',
-  '济南市历城区幸福柳广场公共充电站',
-  '济南市历城区华山安置一区公共充电站',
-  '山东省莱芜市开发区汶河大道长运公共交通有限公司公交充电站（内部）',
-  '济南市章丘区明水公共充电站',
+  '特来电自贸大厦',
+  '幸福柳广场公共充电站',
+  '安置一区公共充电站',
+  '开发区汶河大道长运公共交通有限公司公交充电站（内部）',
+  '明水公共充电站',
   '舜德路充电站',
-  '济南市市中区纬三路24号充电站',
-  '学府中天汽车总站超级充电站'
+  '纬三路24号充电站',
+  '汽车总站超级充电站'
 ]
 const dataList = ref([
   {
@@ -56,7 +56,7 @@ const getChart = () => {
   const option = {
     // backgroundColor: '#fff',
     title: {
-      text: '单位/%',
+      // text: '单位/%',
       top: '4%',
       left: '3%',
       textStyle: {
@@ -103,7 +103,7 @@ const getChart = () => {
         rotate: 45,
         interval: 0, // 或者设置为 1
         formatter: function (value) {
-          return [value.slice(0, 4), '....'].join('')
+          return [value.slice(0, 4)].join('')
         }
       }
     },
@@ -113,6 +113,11 @@ const getChart = () => {
         // min: function (value) {
         //   return value.min*0.9;
         // },
+        name: '单位(个)',
+        nameTextStyle: {
+          color: '#fff',
+          fontSize: 12
+        },
         type: 'value',
         min: 0,
         // max: 100 - minNumber,

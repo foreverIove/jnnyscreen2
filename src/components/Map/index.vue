@@ -4,6 +4,107 @@
       <div class="left" @click="SelectArea()" :class="Area ? 'active' : ''">选取区域</div>
       <div class="right" @click="Reset()" :class="Area ? '' : 'active'">重置</div>
     </div>
+    <!-- 数据汇总 -->
+    <div style="
+        width: 1275px;
+        height: 110px;
+        z-index: 999999999;
+
+        position: absolute;
+        top: 100px;
+        left: 630px;
+        z-index: 9999;
+        color: #fff;
+        text-align: center;
+        font-size: 20px;
+        padding-left: 50px;
+        display: flex;
+      ">
+      <div class="toplogo" v-if="props.MapSure == 'ParkingComprehensive'" style="
+          width: 275px;
+          height: 110px;
+          background-color: #09273b;
+
+          z-index: 9999;
+          color: #fff;
+          text-align: center;
+          font-size: 20px;
+          padding-left: 50px;
+        ">
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">充电量总计</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">{{ cdlzj }}kWh</div>
+      </div>
+      <div class="toplogo" v-if="props.MapSure == 'OperationalAnalysis'" style="
+          width: 275px;
+          height: 110px;
+          background-color: #09273b;
+
+          z-index: 9999;
+          color: #fff;
+          text-align: center;
+          font-size: 20px;
+          padding-left: 50px;
+        ">
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">电站总计</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+      </div>
+      <div class="toplogo" v-if="props.MapSure == 'Dianzhanrongliang'" style="
+          width: 275px;
+          height: 110px;
+          background-color: #09273b;
+
+          z-index: 9999;
+          color: #fff;
+          text-align: center;
+          font-size: 20px;
+          padding-left: 50px;
+        ">
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">电站容量总计</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+      </div>
+      <div class="toplogo" v-if="props.MapSure == 'EquipmentMonitoring'" style="
+          width: 275px;
+          height: 110px;
+          background-color: #09273b;
+
+          z-index: 9999;
+          color: #fff;
+          text-align: center;
+          font-size: 20px;
+          padding-left: 50px;
+        ">
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">平均终端利用率</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+      </div>
+      <div class="toplogo" v-if="props.MapSure == 'SmartInspection'" style="
+          width: 275px;
+          height: 110px;
+          background-color: #09273b;
+
+          z-index: 9999;
+          color: #fff;
+          text-align: center;
+          font-size: 20px;
+          padding-left: 50px;
+        ">
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">实时功率</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+      </div>
+      <div class="toplogo" v-if="props.MapSure == 'SmartLighting'" style="
+          width: 275px;
+          height: 110px;
+          background-color: #09273b;
+
+          z-index: 9999;
+          color: #fff;
+          text-align: center;
+          font-size: 20px;
+          padding-left: 50px;
+        ">
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">充电终端数量</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+      </div>
+    </div>
     <!-- <div class="topmuen2">
       <div class="left">当前区域：</div>
       <div class="right">{{ nameArea }}</div>
@@ -117,7 +218,7 @@ import { defineProps } from 'vue'
 // 热力图
 let dataSet = reactive({
   data: [],
-  max: 10
+  max: 1500
 })
 const props = defineProps({
   isShowArea: Boolean,
@@ -1744,6 +1845,8 @@ onMounted(() => {
 })
 let geoJsonData = ref({})
 const dataFBSetup = ref([])
+let cdlzj = ref(0)
+// let biaozhun=ref(1500)
 watchEffect(() => {
   console.log('网格图数据进入', props.MapSure)
   if (props.MapSure == 'SmartLighting') {
@@ -1751,6 +1854,7 @@ watchEffect(() => {
     geoJsonData.value = wgt2
   } else if (props.MapSure == 'ParkingComprehensive') {
     geoJsonData.value = wgt1
+    cdlzj.value = geoJsonData.value.features.reduce((sum, item) => sum + item.properties.rank, 0)
   }
   if (props.MapSure != 'SmartLighting' && props.MapSure != 'ParkingComprehensive') {
     geoJsonData.value = null
@@ -1758,7 +1862,10 @@ watchEffect(() => {
   if (props.FenBu && Object.keys(props.FenBu).length > 0) {
     console.log('数据已加载3333:', props.FenBu)
     // initMap()
+    let a = props.FenBu.reduce((sum, item) => sum + item.count, 0)
+
     dataSet.data = props.FenBu
+    dataSet.max = a / (props.FenBu.length - props.FenBu.length / 2)
     // getRMap()
   }
   if (props.RLData && Object.keys(props.RLData).length > 0) {
@@ -1830,8 +1937,8 @@ watch(listpoint, () => {
   console.log('数据变了')
   // 重新渲染地图
 })
-const mapStyle = 'amap://styles/c0a31574ea702fcdff06bc2bc03badcd'
-// const mapStyle = 'amap://styles/blue'
+// const mapStyle = 'amap://styles/c0a31574ea702fcdff06bc2bc03badcd'
+const mapStyle = 'amap://styles/dark'
 const zoom = zoompinia
 let center1 = center
 let lnglatInfo = ref([119, 36.4])
@@ -1849,9 +1956,22 @@ let counts = ref([])
 const getRMap = () => {
   console.log('热力图数据', props)
   dataSet.data = props.RLData
+  // let a = props.RLData.reduce((sum, item) => sum + item.count, 0)
+  // dataSet.max = a / (props.RLData.length - props.RLData.length / 2 / 2)
+  if (props.MapSure == 'EquipmentMonitoring') {
+    dataSet.max = 200
+  } else if (props.MapSure == 'SmartInspection') {
+    let a = props.RLData.reduce((sum, item) => sum + item.count, 0)
+
+    dataSet.max = (a / props.RLData.length) * 20
+    console.log('求和结果', a, dataSet.max)
+    // dataSet.max = 200
+  }
   if (props.MapSure == 'BusinessCollaboration') {
-    dataSet.data = props.FenBu
+    let a = props.FenBu.reduce((sum, item) => sum + item.count, 0)
+    dataSet.max = a / props.FenBu.length
     console.log('补贴使用分布', dataSet.data)
+    dataSet.data = props.FenBu
   }
   // dataSet.data = [
   //   { lng: 117.121, lat: 36.6512, count: 88 },
@@ -2316,14 +2436,14 @@ const labelOptions = ref({
 console.log('fengwo')
 const colors2 = [
   '#FEA500',
-  '#FEA500',
-  '#FEA500',
-  '#FEA500',
-  '#FEA500',
-  '#FEA500',
-  '#FEA500',
+  '#F1940A',
+  '#E48315',
+  '#D7721F',
+  '#CA612A',
+  '#BD5034',
+  '#B03F3F',
   '#C01212'
-].reverse()
+]
 const heights = [100, 200, 300, 900, 1000, 1200, 1500, 3000]
 // 计算路口rank之和
 function sum(arr) {
@@ -2393,22 +2513,41 @@ const layerStyle = ref({
   },
   topColor(index, feature) {
     const ranks = sum(feature.coordinates)
-    // return ranks < 60 ? colors[1] : colors[6];
-    return ranks < 2
-      ? colors2[0]
-      : ranks < 20
-        ? colors2[1]
-        : ranks < 60
-          ? colors2[2]
-          : ranks < 80
-            ? colors2[3]
-            : ranks < 100
-              ? colors2[4]
-              : ranks < 120
-                ? colors2[5]
-                : ranks < 130
-                  ? colors2[6]
-                  : colors2[7]
+    if (props.MapSure == 'ParkingComprehensive') {
+      console.log('进入？？？？？？？？？？？？')
+      // return ranks < 60 ? colors[1] : colors[6];
+      return ranks < 2
+        ? colors2[0]
+        : ranks < 10000
+          ? colors2[1]
+          : ranks < 40000
+            ? colors2[2]
+            : ranks < 80000
+              ? colors2[3]
+              : ranks < 100000
+                ? colors2[4]
+                : ranks < 140000
+                  ? colors2[5]
+                  : ranks < 200000
+                    ? colors2[6]
+                    : colors2[7]
+    } else {
+      return ranks < 2
+        ? colors2[0]
+        : ranks < 20
+          ? colors2[1]
+          : ranks < 40
+            ? colors2[2]
+            : ranks < 60
+              ? colors2[3]
+              : ranks < 80
+                ? colors2[4]
+                : ranks < 120
+                  ? colors2[5]
+                  : ranks < 140
+                    ? colors2[6]
+                    : colors2[7]
+    }
   },
   sideBottomColor(index, feature) {
     const ranks = sum(feature.coordinates)
@@ -2671,6 +2810,10 @@ const layerStyleGD = ref({
 })
 </script>
 <style lang="less" scoped>
+.toplogo {
+  background: url(@/assets/frontpage/bgdiv.png) 100% no-repeat;
+  background-size: 100% 100%;
+}
 /deep/.amap-container {
   // background:#000!important;
   // background: url(@/assets/images/map/mapbg.gif) 100% !important;

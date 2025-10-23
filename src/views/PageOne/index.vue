@@ -197,8 +197,8 @@
             </div>
             <div style="width: 176px; height: 60px; text-align: right; position: relative">
               <!-- <div style="font-size: 24px; color: #fff; margin-bottom: 5px">37305000</div> -->
-              <count-to :start="0" :end="37305000" :autoPlay="true" :duration="2000" style="color: #fff" />
-              <div style="color: #fff">下发补贴金额</div>
+              <count-to :start="0" :end="3175976" :autoPlay="true" :duration="2000" style="color: #fff" />
+              <div style="color: #fff">换电订单数</div>
               <div style="
                   top: 90px;
                   right: 20px;
@@ -239,7 +239,7 @@
 import leftOne from './leftOne.vue'
 import leftThree from './leftThree.vue'
 import leftTwo from './leftTwo.vue'
-import rightOne from './rightOne.vue'
+import rightOne from './rightOne1.vue'
 import rightTwo from './rightTwo.vue'
 import rightThree from './rightThree.vue'
 import mapBootom from './map-bootom.vue'

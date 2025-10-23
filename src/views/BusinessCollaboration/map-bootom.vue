@@ -16,16 +16,16 @@ const getChart = () => {
   const tooltipBg =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAAAdCAYAAACUoyOLAAABd0lEQVRoge2bW27CMBBFZ0xeBlRUCdhNf7qWbqPtBzvoKvtURRWSkDRxdQlIVN1APdwjZwM+Gscfx3p793QjIpsQhvW+Lvu+a0OQIFjkn6NYKpM009zPJ6ruVUTuEwjd17tltX1r63Lbd/smSKDRaFCVNC/UzxeT6WK1zP1sk2BCIfTr/fl7V372XVMNlBoRkFpMXdfUB2lZ4dcJjlxMKIRW24++rashUGo0qKpkfhSaFl79Vdkn+IfiyMWEQmjb7IZL36gYSXOv8AifbrwUjR8nNE5COHMoQRxvucYIIu7S98AilGoQSjUIpRqEUg1CqQahVINQqkEo1SCUahBKNQilGoRSDUKpBqFUg1CqQRwyQ2IIFXF6iEfHDxETiQ/VM4eikiAERjeKzPBUpbFVioexJpw6+INH+ExQdiMEPnWjqNLY/UbEsfudza8PHuEzQaqPsluO3SgL/cj4XejD5xueXTwg1c8Kv0IIzLc0EfH3Lc2LiDz+AN+rpy0EZYVRAAAAAElFTkSuQmCC'
   let category = [
-    '国网（山东）电动汽车服务有限公司',
-    '济南特来电新能源有限公司',
+    '国网',
+    '特来电',
     '星星充电',
-    '济南碧辟小桔新能源有限责任公司',
-    '济南易易互联科技有限责任公司',
-    '山东乾硕物流有限公司',
-    '山东原电新能源科技有限公司',
-    '华安智能泊车(济南)有限公司',
-    '济南蔚来汽车销售服务有限公司',
-    '山东科耐新能源有限公司'
+    '小桔新能源',
+    '易易互联科技',
+    '乾硕物流',
+    '原电新能源',
+    '华安智能泊车',
+    '蔚来汽车',
+    '科耐新能源'
   ]
   let mainData = [
     63113373.64, 33108480.09, 19127350.33, 10202628.62, 6690228.34, 6410295.16, 5875295.98,
@@ -255,7 +255,7 @@ const getChart = () => {
     grid: {
       left: '5%',
       right: '5%',
-      top: '10%',
+      top: '15%',
       bottom: '10%',
       containLabel: true
     },
@@ -298,12 +298,12 @@ const getChart = () => {
         interval: 0,
         rotate: 40,
         formatter: function (value) {
-          return [value.slice(0, 4), '....'].join('')
+          return [value.slice(0, 4)].join('')
         },
         // margin: 8,
         textStyle: {
           show: true,
-          color: '#fff',
+          color: '#A5C9DB',
           fontSize: '12'
         }
       }
@@ -311,6 +311,18 @@ const getChart = () => {
     yAxis: {
       type: 'value',
       show: true,
+      name: '单位(元)',
+      nameTextStyle: {
+        color: '#fff',
+        fontSize: 12
+      },
+      axisLabel: {
+        textStyle: {
+          show: true,
+          color: '#A5C9DB',
+          fontSize: '12'
+        }
+      },
       splitLine: {
         lineStyle: {
           color: 'rgba(255,255,255,0.3)', // 线的颜色

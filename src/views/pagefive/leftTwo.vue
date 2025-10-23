@@ -286,7 +286,7 @@ const getChart = () => {
         },
         axisLabel: {
           fontSize: 14,
-          color: '#fff'
+          color: '#11FFFB'
         }
       }
     ],
@@ -294,6 +294,11 @@ const getChart = () => {
       {
         name: '',
         type: 'value',
+        name: '单位(个)',
+        nameTextStyle: {
+          color: '#fff',
+          fontSize: 12
+        },
         axisLine: {
           show: false
         },
@@ -307,8 +312,8 @@ const getChart = () => {
           }
         },
         axisLabel: {
-          fontSize: 14,
-          color: '#fff'
+          fontSize: 12,
+          color: '#11FFFB'
         }
       }
     ],

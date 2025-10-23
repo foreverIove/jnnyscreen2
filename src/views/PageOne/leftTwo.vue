@@ -47,16 +47,16 @@ const getChart = () => {
   const tooltipBg =
     'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHUAAAAdCAYAAACUoyOLAAABd0lEQVRoge2bW27CMBBFZ0xeBlRUCdhNf7qWbqPtBzvoKvtURRWSkDRxdQlIVN1APdwjZwM+Gscfx3p793QjIpsQhvW+Lvu+a0OQIFjkn6NYKpM009zPJ6ruVUTuEwjd17tltX1r63Lbd/smSKDRaFCVNC/UzxeT6WK1zP1sk2BCIfTr/fl7V372XVMNlBoRkFpMXdfUB2lZ4dcJjlxMKIRW24++rashUGo0qKpkfhSaFl79Vdkn+IfiyMWEQmjb7IZL36gYSXOv8AifbrwUjR8nNE5COHMoQRxvucYIIu7S98AilGoQSjUIpRqEUg1CqQahVINQqkEo1SCUahBKNQilGoRSDUKpBqFUg1CqQRwyQ2IIFXF6iEfHDxETiQ/VM4eikiAERjeKzPBUpbFVioexJpw6+INH+ExQdiMEPnWjqNLY/UbEsfudza8PHuEzQaqPsluO3SgL/cj4XejD5xueXTwg1c8Kv0IIzLc0EfH3Lc2LiDz+AN+rpy0EZYVRAAAAAElFTkSuQmCC'
   let category = [
-    '济南特来电新能源有限公司',
-    '国网（山东）电动汽车服务有限公司',
+    '特来电',
+    '国网  （山东）',
     '星星充电',
-    '山东科耐新能源有限公司',
-    '济南碧辟小桔新能源有限责任公司',
-    '华安智能泊车(济南)有限公司',
+    '科耐新能源有限公司',
+    '小桔新能源有限责任公司',
+    '华安智能',
     '济南银龙电力工程有限公司',
-    '山东中油兴隆能源有限责任公司',
+    '中油兴隆能源有限责任公司',
     '华能特来电（山东）能源有限公司',
-    '山东亿联数字能源科技有限公司'
+    '亿联数字能源科技有限公司'
   ]
   let mainData = [369445, 299652, 61344, 35928, 29880, 27630, 21501, 20640, 14700, 14070]
   const wid = 20
@@ -351,18 +351,23 @@ const getChart = () => {
       axisLabel: {
         interval: 0, // 或者设置为 1
         formatter: function (value) {
-          return [value.slice(0, 4), '....'].join('')
+          return [value.slice(0, 4)].join('')
         },
         rotate: 45,
         margin: 15,
         textStyle: {
-          color: '#fff',
+          color: '#11FFFB',
           fontSize: 12
         }
       }
     },
     yAxis: {
       type: 'value',
+      name: '单位(kWh)',
+      nameTextStyle: {
+        color: '#fff',
+        fontSize: 12
+      },
       show: true,
       splitLine: {
         lineStyle: {

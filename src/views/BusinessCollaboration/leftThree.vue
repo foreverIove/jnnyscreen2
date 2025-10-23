@@ -45,7 +45,7 @@ const getChart = () => {
   const option = {
     // backgroundColor: '#fff',
     title: {
-      text: '(个)',
+      // text: '(个)',
       top: '4%',
       left: '3%',
       textStyle: {
@@ -91,7 +91,7 @@ const getChart = () => {
         show: false
       },
       axisLabel: {
-        color: '#B5C5D4',
+        color: '#A5C9DB',
         fontSize: '10px',
         interval: 0,
         rotate: 35
@@ -103,6 +103,11 @@ const getChart = () => {
         // min: function (value) {
         //   return value.min*0.9;
         // },
+        name: '单位(kWh)',
+        nameTextStyle: {
+          color: '#fff',
+          fontSize: 12
+        },
         type: 'value',
         min: 0,
         // max: 100 - minNumber,
@@ -126,7 +131,7 @@ const getChart = () => {
           show: false
         },
         axisLabel: {
-          color: '#B5C5D4',
+          color: '#A5C9DB',
           fontSize: '12px',
           formatter: (value) => {
             return value + minNumber

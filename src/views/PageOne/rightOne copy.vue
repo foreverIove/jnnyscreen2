@@ -1,267 +1,586 @@
 <template>
   <div class="leftThree">
-    <div class="text1">停车难区块</div>
-    <!-- <div class="text2">重点区域实时停车预警</div> -->
-    <div class="general-container">
-      <div class="general-body">
-        <div class="table-header">
-          <span style="width: 32%">区域</span>
-          <span style="width: 32%">预警</span>
-          <span style="width: 32%">推荐周边停车场</span>
-          <!-- <span style="width: 30%">高峰时段</span> -->
-        </div>
-        <!-- 祖先元素 -->
-        <div class="scrollView" ref="listBox" id="scrollableContainer">
-          <!-- 虚拟列表，无数据 -->
-          <div :style="{ height: listHeight + 'px' }" style="float: left"></div>
-          <div class="scrollable-div">
-            <div
-              style="height: 42px; background: #06407c; margin-bottom: 6px; color: #fff"
-              v-for="(item, index) in list"
-            >
-              {{ item.staname }}
-            </div>
-
-            <!-- 更多内容 -->
-          </div>
-        </div>
-      </div>
-      <!-- {{ dataList1 }} -->
+    <div class="text1" style="color: #fff">
+      各时段电量统计
+      <el-tooltip class="box-item" effect="dark" content="近一月" placement="right">
+        <el-icon :size="20">
+          <QuestionFilled />
+        </el-icon>
+      </el-tooltip>
     </div>
+    <div class="chart-flow" ref="Echarts"></div>
   </div>
 </template>
 <script setup>
+// import { reactive, ref, onMounted } from 'vue'
+import * as echarts from 'echarts' // echarts theme
 import { useTimer } from '@/hooks/useMove3.ts'
+import { virtualList } from '@/hooks/VirtualList.ts'
 // import { useTimer } from 'scroll_cxs_v3'
-import { onMounted, reactive, ref, watch } from 'vue'
-// import { reqQueryChgOrderData } from '@/api/operationAnalysis'
-let dataList1 = ref([])
-let scrollBox22 = ref(null)
-const timer = useTimer()
-// 虚拟列表
-const list = ref([])
-const listHeight = ref(0)
-const itemSize = ref(50)
-const containerHeight = ref(200)
-const visibleCount = ref(6)
-const data = ref([])
-const startOffset = ref(0)
-onMounted(() => {
-  // console.log(Echarts.value)
-  // useMove(dataList1.value,scrollBox2.value)
-  getData()
-  listHeight.value = dataList1.value.length * itemSize.value //计算高度
-  console.log(listHeight.value, '虚拟列表')
-  data.value = dataList1 //数据源给data
-  list.value = dataList1.value.slice(0, 4) //截6个
-  // console.log(list.value)
-  // debugger
-  console.log(list.value, '虚拟')
-  // console.log(useMove)
-  const scrollableDiv = document.getElementById('scrollableContainer')
-  function smoothScrollToBottom(element) {
-    const targetScrollTop = element.scrollHeight
-    let currentScrollTop = element.scrollTop
-    const step = 5
-    const interval = setInterval(() => {
-      currentScrollTop += step
+import 'echarts-gl'
+import { onMounted, reactive, ref, watch, nextTick } from 'vue'
+// import { nextTick } from 'process'
+import { reqThirtyDaysEnergyPeriodData } from '@/api/pageone'
 
-      console.log('滚动条高度：', element.scrollHeight, targetScrollTop, currentScrollTop)
+let Echarts = ref(null)
+// let hours = ref([
+//   '09-07',
+//   '09-08',
+//   '09-09',
+//   '09-10',
+//   '09-11',
+//   '09-12',
+//   '09-13',
+//   '09-14',
+//   '09-15',
+//   '09-16',
+//   '09-17',
+//   '09-18',
+//   '09-19',
+//   '09-20',
+//   '09-21',
+//   '09-22',
+//   '09-23',
+//   '09-24',
+//   '09-25',
+//   '09-26',
+//   '09-27',
+//   '09-28',
+//   '09-29',
+//   '09-30',
+//   '10-01',
+//   '10-02',
+//   '10-03',
+//   '10-04',
+//   '10-05',
+//   '10-06',
+//   '10-07'
+// ])
+// let days = ref(['尖', '峰', '平', '谷', '深'])
+// let data = ref([
+//   [0.0, 0.0, 9087.03],
+//   [0.0, 1.0, 31411.13],
+//   [0.0, 2.0, 62303.32],
+//   [0.0, 3.0, 71286.44],
+//   [0.0, 4.0, 21444.8],
+//   [1.0, 0.0, 9001.41],
+//   [1.0, 1.0, 29902.69],
+//   [1.0, 2.0, 65680.09],
+//   [1.0, 3.0, 66070.68],
+//   [1.0, 4.0, 21086.4],
+//   [2.0, 0.0, 19674.8],
+//   [2.0, 1.0, 49341.41],
+//   [2.0, 2.0, 96556.46],
+//   [2.0, 3.0, 72969.16],
+//   [2.0, 4.0, 23242.3],
+//   [3.0, 0.0, 10009.24],
+//   [3.0, 1.0, 33045.28],
+//   [3.0, 2.0, 66803.06],
+//   [3.0, 3.0, 70296.72],
+//   [3.0, 4.0, 24507.1],
+//   [4.0, 0.0, 9782.09],
+//   [4.0, 1.0, 33261.93],
+//   [4.0, 2.0, 68014.46],
+//   [4.0, 3.0, 67406.24],
+//   [4.0, 4.0, 22808.9],
+//   [5.0, 0.0, 10633.92],
+//   [5.0, 1.0, 36651.21],
+//   [5.0, 2.0, 79551.3],
+//   [5.0, 3.0, 69597.03],
+//   [5.0, 4.0, 25479.7],
+//   [6.0, 0.0, 9956.28],
+//   [6.0, 1.0, 39299.33],
+//   [6.0, 2.0, 71275.49],
+//   [6.0, 3.0, 75734.51],
+//   [6.0, 4.0, 22835.6],
+//   [7.0, 0.0, 9551.86],
+//   [7.0, 1.0, 42001.77],
+//   [7.0, 2.0, 72740.91],
+//   [7.0, 3.0, 73369.08],
+//   [7.0, 4.0, 24426.7],
+//   [8.0, 0.0, 9483.59],
+//   [8.0, 1.0, 43826.27],
+//   [8.0, 2.0, 74153.91],
+//   [8.0, 3.0, 74871.47],
+//   [8.0, 4.0, 23077.6],
+//   [9.0, 0.0, 1417314.41],
+//   [9.0, 1.0, 164124.29],
+//   [9.0, 2.0, 1134237.07],
+//   [9.0, 3.0, 71668.6],
+//   [9.0, 4.0, 21932.2],
+//   [10.0, 0.0, 1111351.78],
+//   [10.0, 1.0, 35132.62],
+//   [10.0, 2.0, 75039.83],
+//   [10.0, 3.0, 72200.83],
+//   [10.0, 4.0, 1124750.0],
+//   [11.0, 0.0, 10010.52],
+//   [11.0, 1.0, 37784.16],
+//   [11.0, 2.0, 73587.23],
+//   [11.0, 3.0, 76658.43],
+//   [11.0, 4.0, 24855.6],
+//   [12.0, 0.0, 302758.02],
+//   [12.0, 1.0, 217375.59],
+//   [12.0, 2.0, 246020.18],
+//   [12.0, 3.0, 186167.45],
+//   [12.0, 4.0, 134499.0],
+//   [13.0, 0.0, 11304.06],
+//   [13.0, 1.0, 38746.64],
+//   [13.0, 2.0, 79558.97],
+//   [13.0, 3.0, 84349.02],
+//   [13.0, 4.0, 26055.5],
+//   [14.0, 0.0, 9267.09],
+//   [14.0, 1.0, 39435.77],
+//   [14.0, 2.0, 75478.95],
+//   [14.0, 3.0, 79544.96],
+//   [14.0, 4.0, 23925.9],
+//   [15.0, 0.0, 10701.94],
+//   [15.0, 1.0, 46712.76],
+//   [15.0, 2.0, 86972.49],
+//   [15.0, 3.0, 100375.16],
+//   [15.0, 4.0, 25621.9],
+//   [16.0, 0.0, 9715.45],
+//   [16.0, 1.0, 38971.75],
+//   [16.0, 2.0, 71274.08],
+//   [16.0, 3.0, 73761.75],
+//   [16.0, 4.0, 20620.6],
+//   [17.0, 0.0, 8458.97],
+//   [17.0, 1.0, 33459.77],
+//   [17.0, 2.0, 71200.96],
+//   [17.0, 3.0, 76493.56],
+//   [17.0, 4.0, 26403.6],
+//   [18.0, 0.0, 17827.78],
+//   [18.0, 1.0, 42559.07],
+//   [18.0, 2.0, 75740.86],
+//   [18.0, 3.0, 421897.4],
+//   [18.0, 4.0, 25521.8],
+//   [19.0, 0.0, 10548.86],
+//   [19.0, 1.0, 44749.25],
+//   [19.0, 2.0, 81711.98],
+//   [19.0, 3.0, 87789.48],
+//   [19.0, 4.0, 23950.1],
+//   [20.0, 0.0, 9743.33],
+//   [20.0, 1.0, 49967.71],
+//   [20.0, 2.0, 81667.37],
+//   [20.0, 3.0, 90508.05],
+//   [20.0, 4.0, 23911.0],
+//   [21.0, 0.0, 10752.4],
+//   [21.0, 1.0, 43923.93],
+//   [21.0, 2.0, 78830.49],
+//   [21.0, 3.0, 80427.17],
+//   [21.0, 4.0, 25644.2],
+//   [22.0, 0.0, 11572.54],
+//   [22.0, 1.0, 45208.16],
+//   [22.0, 2.0, 80944.5],
+//   [22.0, 3.0, 79794.06],
+//   [22.0, 4.0, 23898.0],
+//   [23.0, 0.0, 15461.27],
+//   [23.0, 1.0, 65805.06],
+//   [23.0, 2.0, 101978.58],
+//   [23.0, 3.0, 93497.63],
+//   [23.0, 4.0, 24705.9],
+//   [24.0, 0.0, 19089.86],
+//   [24.0, 1.0, 73467.81],
+//   [24.0, 2.0, 137306.9],
+//   [24.0, 3.0, 112291.0],
+//   [24.0, 4.0, 26285.4],
+//   [25.0, 0.0, 18178.53],
+//   [25.0, 1.0, 71364.9],
+//   [25.0, 2.0, 119871.11],
+//   [25.0, 3.0, 97573.04],
+//   [25.0, 4.0, 28313.3],
+//   [26.0, 0.0, 19890.24],
+//   [26.0, 1.0, 70805.27],
+//   [26.0, 2.0, 117746.98],
+//   [26.0, 3.0, 100901.48],
+//   [26.0, 4.0, 26851.7],
+//   [27.0, 0.0, 19492.46],
+//   [27.0, 1.0, 75498.63],
+//   [27.0, 2.0, 127350.46],
+//   [27.0, 3.0, 92815.34],
+//   [27.0, 4.0, 26610.5],
+//   [28.0, 0.0, 1875600.56],
+//   [28.0, 1.0, 73787.55],
+//   [28.0, 2.0, 117598.09],
+//   [28.0, 3.0, 99079.21],
+//   [28.0, 4.0, 26429.9],
+//   [29.0, 0.0, 16435.57],
+//   [29.0, 1.0, 68918.82],
+//   [29.0, 2.0, 111311.49],
+//   [29.0, 3.0, 92230.76],
+//   [29.0, 4.0, 26541.4],
+//   [30.0, 0.0, 11800.17],
+//   [30.0, 1.0, 18441.24],
+//   [30.0, 2.0, 67905.23],
+//   [30.0, 3.0, 70465.38],
+//   [30.0, 4.0, 26981.8]
+// ])
 
-      if (currentScrollTop >= targetScrollTop) {
-        console.log('进入6')
-        element.scrollTop = targetScrollTop
-        clearInterval(interval)
-        smoothScrollToTop(scrollableDiv)
-      } else {
-        onScroll()
-        element.scrollTop = currentScrollTop
-      }
-    }, 500)
-  }
-  setTimeout(() => {
-    smoothScrollToBottom(scrollableDiv)
-  }, 1000)
-})
-const listBox = ref(null)
-// data就是数据源
-const onScroll = () => {
-  //当前滚动位置
-  let scrollTop = listBox.value.scrollTop
-  // 列表开始索引0 0 0 0 0 1 1 2 2 3 4 4 4
-  let startIndex = Math.floor(scrollTop / itemSize.value)
-  // 列表结束索引
-  let endIndex = Math.ceil((scrollTop + containerHeight.value) / itemSize.value) - 1
-  // console.log(
-  //   '计算',
-  //   scrollTop + containerHeight.value,
-  //   itemSize.value,
-  //   Math.ceil((scrollTop + containerHeight.value) / itemSize.value)
-  // )
-  console.log('开始和结束', startIndex, endIndex)
-  list.value = dataList1.value.slice(startIndex, endIndex)
-  // 列表移动距离
-  startOffset.value = scrollTop - (scrollTop % itemSize.value)
-}
-// 向上滑动
-// 向上滑动的函数
-const smoothScrollToTop = (element) => {
-  const targetScrollTop = 0 // 滚动条目标位置是顶部
-  let currentScrollTop = element.scrollTop
-  const step = 1
-
-  const interval = setInterval(() => {
-    currentScrollTop -= step // 每次减少 scrollTop 来向上滚动
-
-    console.log('滚动条高度：', element.scrollHeight, targetScrollTop, currentScrollTop)
-
-    if (currentScrollTop <= targetScrollTop) {
-      console.log('已滚动到顶部')
-      element.scrollTop = targetScrollTop
-      clearInterval(interval)
-      console.log('到顶了')
-      // 如果需要滚动完之后继续自动滚动，重新开始调用此函数
-      // smoothScrollToTop(scrollableDiv)
-    } else {
-      onScroll()
-      element.scrollTop = currentScrollTop
-    }
-  }, 50)
-}
-
-// 虚拟列表
+// ----------------------------
 const getData = async () => {
-  //   let result = await reqQueryChgOrderData()
-  dataList1.value = [
-    {
-      staname: '山东省图书馆',
-      transactionid: '●紧张',
-      starttime: '10',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '省立医院',
-      transactionid: '●爆满',
-      starttime: '0',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '齐鲁软件园',
-      transactionid: '●爆满',
-      starttime: '3',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '汉峪金谷',
-      transactionid: '●紧张',
-      starttime: '15',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '洪家楼',
-      transactionid: '●紧张',
-      starttime: '20',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '大明湖',
-      transactionid: '●紧张',
-      starttime: '25',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '济南站',
-      transactionid: '●紧张',
-      starttime: '12',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '千佛山风景区',
-      transactionid: '●紧张',
-      starttime: '30',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '何瑞广场',
-      transactionid: '●紧张',
-      starttime: '10',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '奥体中心',
-      transactionid: '●爆满',
-      starttime: '0',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '济南动物园',
-      transactionid: '●爆满',
-      starttime: '2',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '山东省体育中心',
-      transactionid: '●爆满',
-      starttime: '3',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '东方大厦',
-      transactionid: '●紧张',
-      starttime: '7',
-      endtime: '11:00-2:00'
-    },
-    {
-      staname: '济南恒隆广场',
-      transactionid: '●紧张',
-      starttime: '6',
-      endtime: '11:00-2:00'
-    }
-  ]
-  //   if (result.code == 0) {
-  //     dataList1.value = result.chgOrderData
-  //     console.log('获取充电订单', dataList1)
-  // timer.startTimer({
-  //   DataSource: dataList1.value, //必填
-  //   Dom: scrollBox22.value, //必填
-  //   // duration: 10
-  //   Count: 3
-  //   // Height: 41
-  // })
+  // let res = await reqThirtyDaysEnergyPeriodData()
+  // console.log('各时段充电量统计', res)
+  // if (res.code == 0) {
+  //   hours.value = res.data.yData
+  //   days.value = res.data.xData
+  //   data.value = res.data.zData
+  //   getChart()
+  // }
+}
 
-  //   }
+const getChart = () => {
+  // prettier-ignore
+  let hours = ['12a', '1a', '2a', '3a', '4a', '5a', '6a',
+    '7a', '8a', '9a', '10a', '11a',
+    '12p', '1p', '2p', '3p', '4p', '5p',
+    '6p', '7p', '8p', '9p', '10p', '11p']
+  // prettier-ignore
+  let days = ['尖', '峰', '平',
+    '谷', '深谷', 'Monday', 'Sunday']
+  let data = [
+    [0, 0, 5],
+    [0, 1, 1],
+    [0, 2, 0],
+    [0, 3, 0],
+    [0, 4, 0],
+    [0, 5, 0],
+    [0, 6, 0],
+    [0, 7, 0],
+    [0, 8, 0],
+    [0, 9, 0],
+    [0, 10, 0],
+    [0, 11, 2],
+    [0, 12, 4],
+    [0, 13, 1],
+    [0, 14, 1],
+    [0, 15, 3],
+    [0, 16, 4],
+    [0, 17, 6],
+    [0, 18, 4],
+    [0, 19, 4],
+    [0, 20, 3],
+    [0, 21, 3],
+    [0, 22, 2],
+    [0, 23, 5],
+    [1, 0, 7],
+    [1, 1, 0],
+    [1, 2, 0],
+    [1, 3, 0],
+    [1, 4, 0],
+    [1, 5, 0],
+    [1, 6, 0],
+    [1, 7, 0],
+    [1, 8, 0],
+    [1, 9, 0],
+    [1, 10, 5],
+    [1, 11, 2],
+    [1, 12, 2],
+    [1, 13, 6],
+    [1, 14, 9],
+    [1, 15, 11],
+    [1, 16, 6],
+    [1, 17, 7],
+    [1, 18, 8],
+    [1, 19, 12],
+    [1, 20, 5],
+    [1, 21, 5],
+    [1, 22, 7],
+    [1, 23, 2],
+    [2, 0, 1],
+    [2, 1, 1],
+    [2, 2, 0],
+    [2, 3, 0],
+    [2, 4, 0],
+    [2, 5, 0],
+    [2, 6, 0],
+    [2, 7, 0],
+    [2, 8, 0],
+    [2, 9, 0],
+    [2, 10, 3],
+    [2, 11, 2],
+    [2, 12, 1],
+    [2, 13, 9],
+    [2, 14, 8],
+    [2, 15, 10],
+    [2, 16, 6],
+    [2, 17, 5],
+    [2, 18, 5],
+    [2, 19, 5],
+    [2, 20, 7],
+    [2, 21, 4],
+    [2, 22, 2],
+    [2, 23, 4],
+    [3, 0, 7],
+    [3, 1, 3],
+    [3, 2, 0],
+    [3, 3, 0],
+    [3, 4, 0],
+    [3, 5, 0],
+    [3, 6, 0],
+    [3, 7, 0],
+    [3, 8, 1],
+    [3, 9, 0],
+    [3, 10, 5],
+    [3, 11, 4],
+    [3, 12, 7],
+    [3, 13, 14],
+    [3, 14, 13],
+    [3, 15, 12],
+    [3, 16, 9],
+    [3, 17, 5],
+    [3, 18, 5],
+    [3, 19, 10],
+    [3, 20, 6],
+    [3, 21, 4],
+    [3, 22, 4],
+    [3, 23, 1],
+    [4, 0, 1],
+    [4, 1, 3],
+    [4, 2, 0],
+    [4, 3, 0],
+    [4, 4, 0],
+    [4, 5, 1],
+    [4, 6, 0],
+    [4, 7, 0],
+    [4, 8, 0],
+    [4, 9, 2],
+    [4, 10, 4],
+    [4, 11, 4],
+    [4, 12, 2],
+    [4, 13, 4],
+    [4, 14, 4],
+    [4, 15, 14],
+    [4, 16, 12],
+    [4, 17, 1],
+    [4, 18, 8],
+    [4, 19, 5],
+    [4, 20, 3],
+    [4, 21, 7],
+    [4, 22, 3],
+    [4, 23, 0],
+    [5, 0, 2],
+    [5, 1, 1],
+    [5, 2, 0],
+    [5, 3, 3],
+    [5, 4, 0],
+    [5, 5, 0],
+    [5, 6, 0],
+    [5, 7, 0],
+    [5, 8, 2],
+    [5, 9, 0],
+    [5, 10, 4],
+    [5, 11, 1],
+    [5, 12, 5],
+    [5, 13, 10],
+    [5, 14, 5],
+    [5, 15, 7],
+    [5, 16, 11],
+    [5, 17, 6],
+    [5, 18, 0],
+    [5, 19, 5],
+    [5, 20, 3],
+    [5, 21, 4],
+    [5, 22, 2],
+    [5, 23, 0],
+    [6, 0, 1],
+    [6, 1, 0],
+    [6, 2, 0],
+    [6, 3, 0],
+    [6, 4, 0],
+    [6, 5, 0],
+    [6, 6, 0],
+    [6, 7, 0],
+    [6, 8, 0],
+    [6, 9, 0],
+    [6, 10, 1],
+    [6, 11, 0],
+    [6, 12, 2],
+    [6, 13, 1],
+    [6, 14, 3],
+    [6, 15, 4],
+    [6, 16, 0],
+    [6, 17, 0],
+    [6, 18, 0],
+    [6, 19, 0],
+    [6, 20, 1],
+    [6, 21, 2],
+    [6, 22, 2],
+    [6, 23, 6]
+  ]
+
+  let myChart = echarts.init(Echarts.value)
+
+  const option = {
+    tooltip: {},
+    visualMap: {
+      show: false,
+      max: 20,
+      inRange: {
+        color: [
+          '#313695',
+          '#4575b4',
+          '#74add1',
+          '#abd9e9',
+          '#e0f3f8',
+          '#ffffbf',
+          '#fee090',
+          '#fdae61',
+          '#f46d43',
+          '#d73027',
+          '#a50026'
+        ]
+      }
+    },
+    xAxis3D: {
+      type: 'category',
+      data: hours,
+      axisLabel: {
+        show: true,
+
+        textStyle: {
+          color: 'rgba(195, 213, 248, 1)',
+          fontSize: 12
+        }
+      }
+    },
+    yAxis3D: {
+      type: 'category',
+      data: days,
+      axisLabel: {
+        show: true,
+
+        textStyle: {
+          color: 'rgba(195, 213, 248, 1)',
+          fontSize: 12
+        }
+      }
+    },
+    zAxis3D: {
+      type: 'value',
+      name: '电量',
+      nameTextStyle: {
+        color: 'rgb(233,240,255)',
+        fontSize: 12,
+        padding: 10
+      },
+      axisLabel: {
+        show: true,
+
+        textStyle: {
+          color: 'rgba(195, 213, 248, 1)',
+          fontSize: 12
+        }
+      }
+    },
+    grid3D: {
+      top: '-15%',
+      // left: '10%',
+      // right: '2%',
+      bottom: '12%',
+      boxWidth: 110,
+      boxDepth: 80,
+      viewControl: {
+        // projection: 'orthographic'
+      },
+      light: {
+        main: {
+          intensity: 1.2,
+          shadow: true
+        },
+        ambient: {
+          intensity: 0.3
+        }
+      }
+    },
+    series: [
+      {
+        type: 'bar3D',
+        data: data.map(function (item) {
+          return {
+            value: [item[1], item[0], item[2]]
+          }
+        }),
+        shading: 'lambert',
+        label: {
+          fontSize: 16,
+          borderWidth: 1
+        },
+        emphasis: {
+          label: {
+            fontSize: 20,
+            color: '#900'
+          },
+          itemStyle: {
+            color: '#900'
+          }
+        }
+      }
+    ]
+  }
+
+  option && myChart.setOption(option)
 }
-const OutTimer = () => {
-  // setTimeout(() => {
-  // timer.startTimer({
-  //   DataSource: dataList1.value, //必填
-  //   Dom: scrollBox22.value //必填
-  //   // duration: 10
-  //   // Count: 3,
-  //   // Height: 41
-  // })
-  timer.resumeTimer()
-  // }, 500)
-}
-const useStopTimer = () => {
-  timer.stopTimer()
-  console.log('触发定时器清除', timer.stopTimer)
-  // useMove(dataList1.value, scrollBox22.value, true, 2, 42)
-}
+
+onMounted(() => {
+  // getData()
+  setTimeout(() => {
+    getChart()
+  }, 500)
+  nextTick(() => {})
+})
 </script>
 
 <style lang="less" scoped>
+svg {
+  position: relative;
+  top: 4px;
+}
+.text1 {
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 20px;
+  // margin-bottom: 10px;
+  // border: 1px solid red;
+  height: 45px;
+  line-height: 35px;
+  background: url(@/assets/frontpage/titlebg.png) 100% no-repeat;
+  background-size: 100% 100%;
+  padding-top: 3px;
+  padding-left: 40px;
+}
+.chart-flow {
+  height: 100%;
+  width: 100%;
+  &::before {
+    content: ' ';
+    width: 169px;
+    // height: 169px;
+    position: absolute;
+    // top: 41px;
+    left: 54px;
+    // background: url(@/assets/images/power/pie_bg_2.png) no-repeat;
+    background: none !important;
+  }
+}
+.chart-div {
+  /*background: -webkit-linear-gradient(top, #041133, #041133, #1b1b47);*/
+  // background-color: rgba(4, 17, 51, 0.5);
+  // min-height: calc(~'100%');
+  transform: rotateX(45deg);
+  height: 400px;
+  margin-top: -60px;
+}
 /*chrome 和Safari*/
 .scrollView::-webkit-scrollbar {
-  // width: 0 !important;
+  width: 0 !important;
 }
 /*IE 10+*/
 .scrollView {
-  // -ms-overflow-style: none;
+  -ms-overflow-style: none;
 }
 /*Firefox*/
 .scrollView {
-  // overflow: -moz-scrollbars-none;
+  overflow: -moz-scrollbars-none;
 }
 // 祖先
 .scrollView {
@@ -282,39 +601,17 @@ const useStopTimer = () => {
 }
 
 .leftThree {
+  // box-shadow: inset 0 0 5px rgb(252, 250, 250);
   padding-top: 10px;
   height: 315px;
   //   border: 1px solid #acb3bd;
   // background: #0049ac;
-  background: url(@/assets/images/PageOne/leftOne.png) 100% no-repeat;
-  background-size: 100% 100%;
+  // background: url(@/assets/images/PageOne/leftOne.png) 100% no-repeat;
+  // background-size: 100% 100%;
   margin-bottom: -5px;
   overflow: hidden;
-  .text1 {
-    color: #fff;
-    font-size: 18px;
-    font-weight: bold;
-    margin-left: 20px;
-    margin-bottom: 10px;
-    height: 45px;
-    line-height: 35px;
-    background: url(@/assets/images/PageOne/title.png) 100% no-repeat;
-    background-size: 100% 100%;
-    padding-left: 40px;
-  }
-  .text2 {
-    color: #fff;
-    font-size: 15px;
-    font-weight: bold;
-    margin-left: 20px;
-    margin-bottom: 10px;
-  }
 }
-.scroll-box-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+
 .general-container {
   position: relative;
 
@@ -336,60 +633,16 @@ const useStopTimer = () => {
       font-weight: bold;
       border-bottom: 1px solid rgba(#3fc2ff, 0.2);
       //   margin-bottom: 6px;
-      background-color: #0a4cad;
+      background-color: #000;
 
       span {
         //flex: 1;
       }
     }
-
-    .bbb {
-      margin: auto;
-      width: 100%;
-      height: 204px;
-      //   overflow: hidden;
-      cursor: pointer;
-      color: #99bff3;
-      font-size: 16px;
-      border-top: none;
-      font-weight: 400;
-
-      .scroll-box-item {
-        padding: 10px;
-        box-sizing: border-box;
-        font-size: 12px;
-        flex: 1;
-        justify-content: stretch;
-        height: 40px;
-        margin-bottom: 6px;
-        text-align: center;
-        display: flex;
-        // align-items: center;
-        align-items: center;
-        background: rgba(#3fc2ff, 0.1);
-        overflow:;
-        //height: 40px;
-        //line-height: 40px;
-        //display: flex;
-        &:hover {
-          // border: 1px solid #fff;
-          box-shadow:
-            inset 0 0 5px rgba(0, 204, 255, 0.8),
-            inset 0 0 10px rgba(0, 204, 255, 0.6),
-            inset 0 0 15px rgba(0, 204, 255, 0.4),
-            inset 0 0 20px rgba(0, 204, 255, 0.2); /* 发光颜色及强度 */
-        }
-        div {
-          //flex: 1;
-          color: #99bff3;
-          pointer-events: auto;
-          display: -webkit-box;
-          -webkit-line-clamp: 2; //控制文字显示行数
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-      }
+    .item:hover {
+      // border: 1px solid #fff;
+      box-shadow: inset 0 0 5px rgba(0, 204, 255, 0.8), inset 0 0 10px rgba(0, 204, 255, 0.6),
+        inset 0 0 15px rgba(0, 204, 255, 0.4), inset 0 0 20px rgba(0, 204, 255, 0.2); /* 发光颜色及强度 */
     }
   }
 }

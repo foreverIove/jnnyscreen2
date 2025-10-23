@@ -11,7 +11,9 @@
       <div class="map" style="position: relative">
         <Map :boundary="false" :MapSure="'BusinessCollaboration'" :dataFB="dataFB" :RLData="RLData"
           :FenBu="FenBu"></Map>
-        <el-tooltip class="box-item" effect="dark" content="济南市市民已使用充电补贴的分布情况" placement="right">
+        <!-- <Map :boundary="false" :MapSure="'BusinessCollaboration'" :dataFB="dataFB" :RLData="RLData"
+          :FenBu="FenBu"></Map> -->
+        <el-tooltip class="box-item" effect="dark" content="本月的电费+服务费的分布情况" placement="right">
           <div class="falseAct" :class="isShowS ? 'activeS' : ''" style="
               width: 200px;
               line-height: 68px;
@@ -21,10 +23,10 @@
 
               text-align: center;
             " @click="changeState()">
-            补贴使用分布
+            本月收入分布图
           </div>
         </el-tooltip>
-        <el-tooltip class="box-item" effect="dark" content="市民在济南市充电费用分布情况" placement="right">
+        <el-tooltip class="box-item" effect="dark" content="本月服务费分布情况" placement="right">
           <div class="falseAct" :class="isShowS ? '' : 'activeS'" style="
               width: 200px;
               line-height: 68px;
@@ -34,7 +36,7 @@
 
               text-align: center;
             " @click="changeState()">
-            充电消费分布
+            利润分布图
           </div>
         </el-tooltip>
         <div :style="{ color: isShowS ? '#fff' : '#10FFFC ' }" style="
@@ -45,7 +47,7 @@
             background-color: #061b31;
             padding: 0;
           ">
-          1272310.08元
+          {{ qh1 }}元
         </div>
         <div :style="{ color: isShowS ? '#10FFFC' : '#fff ' }" style="
             position: absolute;
@@ -54,7 +56,7 @@
             font-size: 40px;
             background-color: #061b31;
           ">
-          226535207.38元
+          {{ qh2 }}元
         </div>
       </div>
       <div class="map-bootom">
@@ -82,6 +84,7 @@ import muen from './muen.vue'
 import { reqAreaData } from '@/api/areaData'
 import { onMounted, ref } from 'vue'
 import { cdl } from '../frontpage/cdl'
+import { cdl2 } from '../frontpage/cdl2'
 const menuData = ref([])
 const getAreaData = async () => {
   // let result = await reqAreaData({ code: '1' })
@@ -90,12 +93,27 @@ const getAreaData = async () => {
 }
 onMounted(() => {
   getAreaData()
+  qh1.value = cdl.reduce((sum, item) => sum + item.count, 0).toFixed(2)
+  qh2.value = cdl2.reduce((sum, item) => sum + item.count, 0).toFixed(2)
 })
 const FenBu = ref([])
+
 FenBu.value = cdl
 const isShowS = ref(true)
+const qh1 = ref(0)
+const qh2 = ref(0)
 const changeState = () => {
   isShowS.value = !isShowS.value
+  if (isShowS.value) {
+    // 收入
+    FenBu.value = cdl
+    // qh1.value = cdl.reduce((sum, item) => sum + item.count, 0).toFixed(2)
+  } else {
+    // 利润
+    FenBu.value = cdl2
+    // qh2.value = cdl2.reduce((sum, item) => sum + item.count, 0).toFixed(2)
+    // cdlzj.value = geoJsonData.value.features.reduce((sum, item) => sum + item.properties.rank, 0)
+  }
 }
 </script>
 

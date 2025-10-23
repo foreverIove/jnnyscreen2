@@ -22,7 +22,7 @@
           ">
           实时充电人数：30
         </div>
-        <Map :isShowArea="true" :RLData="RLData" :MapSure="'SSCDuser'"></Map>
+        <!-- <Map :isShowArea="true" :RLData="RLData" :MapSure="'SSCDuser'"></Map> -->
       </div>
       <div class="map-bootom">
         <mapBootom></mapBootom>

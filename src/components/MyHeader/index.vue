@@ -8,9 +8,16 @@
     </div>
 
     <!-- <div style="width: 600px; height: 4px"></div> -->
-    <div class="menu" :class="{ 'left-active': TypeList[1].type1 }" @click="onNavigationClick('dataOverview', $event)">
+    <!-- 用户分析 -->
+    <!-- <div class="menu" :class="{ 'left-active': TypeList[1].type1 }" @click="onNavigationClick('dataOverview', $event)">
       用户分析
+    </div> -->
+    <!-- 用户分析止 -->
+    <div class="menu" :class="{ 'left-active': TypeList[2].type1 }"
+      @click="onNavigationClick('safetySupervision', $event)">
+      费用分析
     </div>
+
     <!-- <div class="menu" :class="{ 'left-active': TypeList[3].type1 }" @click="onNavigationClick('frontpage', $event)">
       监管平台大屏
     </div> -->
@@ -23,15 +30,15 @@
         font-size: 48px;
       " @click="onNavigationClick('frontpage', $event)">
       <!-- 监管平台大屏 -->
-      济南市充换电监管平台大屏
-    </div>
-    <div class="menu" :class="{ 'left-active': TypeList[2].type1 }"
-      @click="onNavigationClick('safetySupervision', $event)">
-      费用分析
+      济南市充换电监管平台
     </div>
     <div class="menu" :class="{ 'left-active': TypeList[4].type1 }" @click="onNavigationClick('pagefive', $event)">
       运维看板
     </div>
+    <div class="menu" :class="{ 'left-active': TypeList[1].type1 }" @click="onNavigationClick('frontpage', $event)">
+      地图看板
+    </div>
+
     <!-- <div
       class="text-wrapper_2 flex-col left-btn"
       :class="{ 'left-active': TypeList[0].type1 }"
@@ -187,7 +194,7 @@ const onNavigationClick = (to: any) => {
         return { ...item, type1: false }
       })
       console.log('进入', TypeList)
-      TypeList.value[3].type1 = true
+      TypeList.value[1].type1 = true
       console.log(TypeList, 9999999999)
       isActivePath.value = 'frontpage'
       setType(JSON.stringify(TypeList.value))

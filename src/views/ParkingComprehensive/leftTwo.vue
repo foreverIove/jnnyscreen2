@@ -86,7 +86,7 @@ const getChart = () => {
           textStyle: {
             color: 'rgba(233, 240, 255, 1)',
             fontWeight: 500,
-            fontSize: '16'
+            fontSize: '12'
           }
         },
         axisTick: {
@@ -110,7 +110,7 @@ const getChart = () => {
           textStyle: {
             color: 'rgba(233, 240, 255, 1)',
             fontWeight: 500,
-            fontSize: '16'
+            fontSize: '12'
           }
         },
         axisTick: {
@@ -123,7 +123,7 @@ const getChart = () => {
         name: '-',
         nameTextStyle: {
           color: 'rgb(233,240,255)',
-          fontSize: 22,
+          fontSize: 12,
           padding: 10
         },
         // min: 0, //最小
@@ -147,7 +147,7 @@ const getChart = () => {
           show: true,
           textStyle: {
             color: 'rgba(195, 213, 248, 1)',
-            fontSize: 22
+            fontSize: 12
           },
           formatter: '{value} '
         }
@@ -185,7 +185,7 @@ const getChart = () => {
           formatter: '{value} %',
           textStyle: {
             color: 'rgba(195, 213, 248, 1)',
-            fontSize: 22
+            fontSize: 12
           }
         }
       }

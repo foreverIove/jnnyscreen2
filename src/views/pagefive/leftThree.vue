@@ -117,27 +117,30 @@ const getChart = () => {
       left: '3%',
       right: '4%',
       bottom: '20%',
-      top: '5%',
+      top: '15%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: xData,
       axisLine: { lineStyle: { color: '#ABCCDD' } },
-      axisLabel: { color: '#A5C9DB', fontSize: 14, rotate: 40 },
+      axisLabel: { color: '#11FFFB', fontSize: 12, rotate: 40 },
       axisTick: { show: false }
     },
     yAxis: {
       type: 'value',
-      name: '单位/t',
-      nameTextStyle: { color: '#A5C9DB', fontSize: 14, align: 'left', padding: [0, 0, 0, -30] },
+      name: '单位(元)',
+      nameTextStyle: {
+        color: '#fff',
+        fontSize: 12
+      },
       axisLine: {
         show: false,
         lineStyle: { color: '#b8eaff' }
       },
       min: 0,
       // max: 80000,
-      axisLabel: { color: '#A5C9DB', fontSize: 14 },
+      axisLabel: { color: '#11FFFB', fontSize: 12 },
       splitLine: {
         lineStyle: {
           color: 'rgba(124, 148, 171, 0.6)',

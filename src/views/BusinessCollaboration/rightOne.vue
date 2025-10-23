@@ -135,7 +135,7 @@ const getChart = () => {
         splitLine: 'none',
         axisTick: 'none',
         axisLine: 'none',
-        data: data.map((item) => item.value),
+        data: data.map((item) => item.value + '元'),
         inverse: true,
         axisLabel: {
           show: true,

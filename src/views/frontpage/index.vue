@@ -95,6 +95,8 @@
           搜索
         </button>
       </div>
+
+      <!-- 数据汇总 -->
       <!-- 筛选框2 -->
       <Map :boundary="false" :MapSure="MapSure" :dataFB="dataFB" :RLData="RLData"></Map>
       <div class="bootomDiv">
@@ -663,6 +665,10 @@ const changeD = () => {
 }
 </style>
 <style scoped lang="less">
+.toplogo {
+  background: url(@/assets/frontpage/bgdiv.png) 100% no-repeat;
+  background-size: 100% 100%;
+}
 /deep/.el-select__placeholder {
   color: #fff !important;
 }
