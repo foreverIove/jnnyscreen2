@@ -4,6 +4,102 @@
       <div class="left" @click="SelectArea()" :class="Area ? 'active' : ''">选取区域</div>
       <div class="right" @click="Reset()" :class="Area ? '' : 'active'">重置</div>
     </div>
+    <!-- ParkingComprehensive -->
+    <div v-if="props.MapSure == 'ParkingComprehensive'" style="
+        position: absolute;
+        top: 250px;
+        right: 50px;
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 180px;
+        height: 300px;
+        z-index: 99999;
+        padding: 20px;
+        color: #fff;
+      ">
+      充电量（度）
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #a40f0f; margin-right: 10px"></div>
+        5万以上
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #963636; margin-right: 10px"></div>
+        1万~5万
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #c37012; margin-right: 10px"></div>
+        5千~1万
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #d98d00; margin-right: 10px"></div>
+        1千~5千
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #d2da00; margin-right: 10px"></div>
+        0~1千
+      </div>
+    </div>
+    <div v-if="props.MapSure == 'SmartLighting'" style="
+        position: absolute;
+        top: 250px;
+        right: 50px;
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 180px;
+        height: 300px;
+        z-index: 99999;
+        padding: 20px;
+        color: #fff;
+      ">
+      终端数（个）
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #a40f0f; margin-right: 10px"></div>
+        100以上
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #963636; margin-right: 10px"></div>
+        51-100
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #c37012; margin-right: 10px"></div>
+        16-50
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #d98d00; margin-right: 10px"></div>
+        6-15
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #d2da00; margin-right: 10px"></div>
+        0-5
+      </div>
+    </div>
+    <div v-if="props.MapSure == 'Dianzhanrongliang'" style="
+        position: absolute;
+        top: 250px;
+        right: 50px;
+        background-color: rgba(0, 0, 0, 0.8);
+        width: 180px;
+        height: 250px;
+        z-index: 99999;
+        padding: 20px;
+        color: #fff;
+      ">
+      电站容量(kWh)
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #a40f0f; margin-right: 10px"></div>
+        3200以上
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #963636; margin-right: 10px"></div>
+        1250-3200
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #c37012; margin-right: 10px"></div>
+        630-1250
+      </div>
+      <div style="display: flex; line-height: 35px; margin-top: 10px">
+        <div style="width: 35px; height: 35px; background: #d98d00; margin-right: 10px"></div>
+        0-630
+      </div>
+    </div>
     <!-- 数据汇总 -->
     <div style="
         width: 1205px;
