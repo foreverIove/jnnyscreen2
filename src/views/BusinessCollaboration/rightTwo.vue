@@ -166,11 +166,11 @@ const getChart = () => {
         endValue: 10,
         filterMode: 'empty',
         width: '50%', //滚动条高度
-        height: 8, //滚动条显示位置
+        height: 4, //滚动条显示位置
         left: 'center',
         zoomLoxk: true, // 是否锁定选择区域（或叫做数据窗口）的大小
         handleSize: 0, //控制手柄的尺寸
-        bottom: 3 // dataZoom-slider组件离容器下侧的距离
+        bottom: 43 // dataZoom-slider组件离容器下侧的距离
       },
       {
         //没有下面这块的话，只能拖动滚动条，鼠标滚轮在区域内不能控制外部滚动条

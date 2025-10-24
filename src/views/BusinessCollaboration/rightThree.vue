@@ -1,6 +1,6 @@
 <template>
   <div class="leftThree">
-    <div class="text1">各行政区费用排行</div>
+    <div class="text1">各行政区收入排行</div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
 </template>
@@ -11,29 +11,27 @@ import { onMounted, ref } from 'vue'
 import { reqRegionSubRank } from '@/api/BusinessCollaboration'
 //
 const data1 = [
-  398914, 305081, 290491, 220186, 125546, 124964, 91245, 77526, 54305, 50320, 35478, 29707, 20592,
-  10819, 193
+  36745738, 35125464, 30642965, 29792756, 26138086, 20027075, 12829606, 7000638, 6341174, 5447858,
+  3367814, 2251166, 1319841
 ]
 const data2 = [
-  398914, 305081, 290491, 220186, 125546, 124964, 91245, 77526, 54305, 50320, 35478, 29707, 20592,
-  10819, 193
+  36745738, 35125464, 30642965, 29792756, 26138086, 20027075, 12829606, 7000638, 6341174, 5447858,
+  3367814, 2251166, 1319841
 ]
 const xData = [
-  '市中区',
-  '历下区',
   '历城区',
   '槐荫区',
+  '市中区',
   '天桥区',
+  '历下区',
   '莱芜区',
   '章丘区',
   '高新区',
   '长清区',
-  '商河区',
   '钢城区',
   '济阳区',
-  '平阴区',
-  '起步区',
-  '南山区'
+  '商河县',
+  '平阴县'
 ]
 //
 let Echarts = ref(null)
@@ -159,7 +157,7 @@ const getChart = () => {
       type: 'category',
       data: xData,
       axisLine: { lineStyle: { color: '#ABCCDD' } },
-      axisLabel: { color: '#A5C9DB', fontSize: 12, rotate: 45 },
+      axisLabel: { color: '#A5C9DB', fontSize: 12, rotate: 45, interval: 0 },
       axisTick: { show: false }
     },
     yAxis: {

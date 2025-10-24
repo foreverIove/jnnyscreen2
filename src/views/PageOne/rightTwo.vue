@@ -1,6 +1,6 @@
 <template>
   <div class="rightTwo" style="position: relative">
-    <div class="text1">终端状态对比</div>
+    <div class="text1">不同类型站点设备占比</div>
     <div class="chart-flow" ref="Echarts"></div>
     <div style="
         width: 185px;
@@ -37,66 +37,191 @@ const dataList = ref([
     value: 772
   }
 ])
+const hexToRgba = (hex, opacity) => {
+  return (
+    'rgba(' +
+    parseInt('0x' + hex.slice(1, 3)) +
+    ',' +
+    parseInt('0x' + hex.slice(3, 5)) +
+    ',' +
+    parseInt('0x' + hex.slice(5, 7)) +
+    ',' +
+    opacity +
+    ')'
+  )
+}
 const getChart = () => {
-  const myChart = echarts.init(Echarts.value)
-  const option = {
-    textStyle: {
-      fontFamily: 'Source Han Sans SC'
-    },
+  // 数据
+  let chartdata = [
+    { name: '公共', value: 19724 },
+    { name: '个人', value: 64 },
+    { name: '公交', value: 968 },
+    { name: '环卫', value: 2 },
+    { name: '物流', value: 1 },
+    { name: '出租车', value: 1 },
+    { name: '分时租赁', value: 1 },
+    { name: '小区共享', value: 1 },
+    { name: '单位', value: 1 },
+    { name: '其他', value: 991 }
+  ]
+  // 颜色系列 - 扩展为9种颜色
+  let color = [
+    '#FFEA3B',
+    '#F48458',
+    '#99ADEE',
+    '#0062F0',
+    '#C640FB',
+    '#00E6E5',
+    '#00BFF9',
+    '#123FEA',
+    '#F3E8BA',
+    '#F2F2F2'
+  ]
+  let color1 = []
+  let color2 = []
+  let color3 = []
+  // 设置每层圆环颜色和添加间隔的透明色
+  color.forEach((item) => {
+    color1.push(item, 'transparent')
+    color2.push(hexToRgba(item, 0.7), 'transparent')
+    color3.push(hexToRgba(item, 0.7), 'transparent')
+  })
 
-    tooltip: {
-      trigger: 'item'
-      // formatter: `{b}<br/> {c}${1 === 1 ? '辆' : ''} ({d}%)`
-    },
-    legend: {
-      orient: 'vertical',
-      right: 20,
-      top: 40,
-      textStyle: {
-        fontSize: 14,
-        color: '#fff',
-        fontWeight: 'normal'
-      },
-      itemGap: 5,
-      itemWidth: 10,
-      itemHeight: 10,
-      borderRadius: 2,
-      data: dataList.value.map((data) => data.name)
-    },
-    series: [
-      {
-        type: 'pie',
-        radius: ['37%', '63%'],
-        center: [139, 110],
-        avoidLabelOverlap: true,
-        label: {
-          show: true,
-          position: 'outside',
-          color: '#fff',
-          fontWeight: 'bold',
-          formatter: '{d}%'
-        },
-        // 添加 emphasis 配置
-        emphasis: {
-          scale: true, // 开启放大效果
-          scaleSize: 15, // 放大尺寸，数值越大放大效果越明显
-          // focus: 'self', // 只高亮当前扇形
-          label: {
-            show: true,
-            fontSize: 16, // 悬浮时标签字体大小
-            fontWeight: 'bold'
+  let data1 = []
+  let sum = 0
+  // 根据总值设置间隔值大小
+  chartdata.forEach((item) => {
+    sum += Number(item.value)
+  })
+  // 给每个数据后添加特定的透明的数据形成间隔
+  chartdata.forEach((item, index) => {
+    if (item.value !== 0) {
+      data1.push(item, {
+        name: '',
+        value: sum / 70,
+        labelLine: {
+          show: false,
+          lineStyle: {
+            color: 'transparent'
           }
         },
-        labelLine: {
-          show: true,
-          length: 10,
-          length2: 10
+        itemStyle: {
+          color: 'transparent'
+        }
+      })
+    }
+  })
+
+  // 分割数据到左右两边
+  const leftLegendData = chartdata.slice(0, 5) // 前5个在左边
+  const rightLegendData = chartdata.slice(5) // 后4个在右边
+
+  const myChart = echarts.init(Echarts.value)
+  const option = {
+    backgroundColor: '#131D25',
+    tooltip: {
+      trigger: 'item',
+      formatter: (params) => {
+        if (params.name !== '') {
+          const percent = ((params.value / sum) * 100).toFixed(1)
+          return params.name + ' : ' + params.value + ' (' + percent + '%)'
+        }
+      }
+    },
+    legend: [
+      // 左侧图例
+      {
+        type: 'scroll',
+        orient: 'vertical',
+        left: '5%',
+        top: 'center',
+        itemGap: 15,
+        itemWidth: 12,
+        itemHeight: 12,
+        textStyle: {
+          color: '#fff',
+          fontSize: 12
         },
-        data: dataList.value
+        formatter: function (name) {
+          const dataItem = leftLegendData.find((item) => item.name === name)
+          if (dataItem) {
+            const percent = ((dataItem.value / sum) * 100).toFixed(1)
+            return `${name}  `
+          }
+          return name
+        },
+        data: leftLegendData.map((item) => item.name)
+      },
+      // 右侧图例
+      {
+        type: 'scroll',
+        orient: 'vertical',
+        right: '5%',
+        top: 'center',
+        itemGap: 15,
+        itemWidth: 12,
+        itemHeight: 12,
+        textStyle: {
+          color: '#fff',
+          fontSize: 12
+        },
+        formatter: function (name) {
+          const dataItem = rightLegendData.find((item) => item.name === name)
+          if (dataItem) {
+            const percent = ((dataItem.value / sum) * 100).toFixed(1)
+            return `${name}  `
+          }
+          return name
+        },
+        data: rightLegendData.map((item) => item.name)
       }
     ],
-    // 数据颜色变化
-    color: colorHelper.value.setcolor1
+    series: [
+      {
+        name: '数据分布',
+        type: 'pie',
+        radius: ['55%', '52%'],
+        center: ['50%', '50%'], // 中心位置回到中间
+        hoverAnimation: false,
+        startAngle: 90,
+        selectedMode: 'single',
+        selectedOffset: 0,
+        itemStyle: {
+          color: (params) => {
+            return color2[params.dataIndex]
+          }
+        },
+        label: {
+          show: false
+        },
+        data: data1,
+        z: 666,
+        // 关键配置：确保所有数据都显示，即使value为0
+        stillShowZeroSum: false
+      },
+      {
+        name: '数据分布',
+        type: 'pie',
+        radius: ['44%', '55%'],
+        center: ['50%', '50%'], // 中心位置回到中间
+        hoverAnimation: false,
+        startAngle: 90,
+        selectedMode: 'single',
+        selectedOffset: 0,
+        itemStyle: {
+          color: (params) => {
+            return color3[params.dataIndex]
+          }
+        },
+        label: {
+          show: false
+        },
+        data: data1,
+        z: 666,
+        // 关键配置：确保所有数据都显示，即使value为0
+        stillShowZeroSum: false
+      }
+    ]
   }
   option && myChart.setOption(option)
 }

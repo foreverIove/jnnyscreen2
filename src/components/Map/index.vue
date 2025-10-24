@@ -6,7 +6,7 @@
     </div>
     <!-- 数据汇总 -->
     <div style="
-        width: 1275px;
+        width: 1205px;
         height: 110px;
         z-index: 999999999;
 
@@ -19,6 +19,7 @@
         font-size: 20px;
         padding-left: 50px;
         display: flex;
+        flex-direction: row-reverse;
       ">
       <div class="toplogo" v-if="props.MapSure == 'ParkingComprehensive'" style="
           width: 275px;
@@ -46,7 +47,9 @@
           padding-left: 50px;
         ">
         <div style="width: 100%; line-height: 40px; margin-top: 20px">电站总计</div>
-        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">
+          {{ dataFBSetup.length }}个
+        </div>
       </div>
       <div class="toplogo" v-if="props.MapSure == 'Dianzhanrongliang'" style="
           width: 275px;
@@ -60,7 +63,15 @@
           padding-left: 50px;
         ">
         <div style="width: 100%; line-height: 40px; margin-top: 20px">电站容量总计</div>
-        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">
+          <!-- geoJsonYD.features.length||'-' -->
+          {{
+            (() => {
+              let num = geoJsonYD.features.reduce((sum, item) => sum + item.properties.rank, 0)
+              return num
+            })()
+          }}kw
+        </div>
       </div>
       <div class="toplogo" v-if="props.MapSure == 'EquipmentMonitoring'" style="
           width: 275px;
@@ -74,7 +85,7 @@
           padding-left: 50px;
         ">
         <div style="width: 100%; line-height: 40px; margin-top: 20px">平均终端利用率</div>
-        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">{{ pjlyl }}%</div>
       </div>
       <div class="toplogo" v-if="props.MapSure == 'SmartInspection'" style="
           width: 275px;
@@ -87,8 +98,8 @@
           font-size: 20px;
           padding-left: 50px;
         ">
-        <div style="width: 100%; line-height: 40px; margin-top: 20px">实时功率</div>
-        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+        <div style="width: 100%; line-height: 40px; margin-top: 20px">实时平均功率</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">{{ ssgl }}kw</div>
       </div>
       <div class="toplogo" v-if="props.MapSure == 'SmartLighting'" style="
           width: 275px;
@@ -102,7 +113,7 @@
           padding-left: 50px;
         ">
         <div style="width: 100%; line-height: 40px; margin-top: 20px">充电终端数量</div>
-        <div style="width: 100%; line-height: 20px; font-weight: bold">9999</div>
+        <div style="width: 100%; line-height: 20px; font-weight: bold">{{ cdzdnum }}个</div>
       </div>
     </div>
     <!-- <div class="topmuen2">
@@ -208,6 +219,7 @@
 
 <script setup>
 import VueAMap, { initAMapApiLoader } from '@vuemap/vue-amap'
+import { dzrl } from './dzrl'
 import { storeToRefs } from 'pinia'
 import { onMounted, ref, inject, reactive, watch, onBeforeUnmount, watchEffect } from 'vue'
 // import { reqPosition, reqSafeanalysis } from '@/api/safetyRegulation'
@@ -1837,7 +1849,7 @@ onMounted(() => {
   // 瓜子啊
 
   getLng()
-
+  geoJsonYD.value = dzrl
   // console.log(props.RLData, '子组件为空')
   // setTimeout(() => {
   //   console.log(props.RLData, '子组件数据传输正常')
@@ -1846,12 +1858,17 @@ onMounted(() => {
 let geoJsonData = ref({})
 const dataFBSetup = ref([])
 let cdlzj = ref(0)
+let dzzj = ref(0)
+let pjlyl = ref(0)
+let ssgl = ref(0)
+let cdzdnum = ref(0)
 // let biaozhun=ref(1500)
 watchEffect(() => {
   console.log('网格图数据进入', props.MapSure)
   if (props.MapSure == 'SmartLighting') {
     console.log('网格图', wgt2)
     geoJsonData.value = wgt2
+    cdzdnum.value = geoJsonData.value.features.reduce((sum, item) => sum + item.properties.rank, 0)
   } else if (props.MapSure == 'ParkingComprehensive') {
     geoJsonData.value = wgt1
     cdlzj.value = geoJsonData.value.features.reduce((sum, item) => sum + item.properties.rank, 0)
@@ -1873,10 +1890,24 @@ watchEffect(() => {
     // initMap()
     getRMap()
   }
-
+  if (props.MapSure == 'EquipmentMonitoring') {
+    // 计算平均利用率
+    let pj = props.RLData.reduce((sum, item) => sum + item.count, 0)
+    console.log(pj / props.RLData.length, '平均终端利用率')
+    pjlyl.value = (pj / props.RLData.length).toFixed(2)
+  }
+  if (props.MapSure == 'SmartInspection') {
+    // 计算平均利用率
+    let pj = props.RLData.reduce((sum, item) => sum + item.count, 0)
+    console.log(pj / props.RLData.length, '平均实时功率')
+    ssgl.value = (pj / props.RLData.length).toFixed(2)
+  }
+  // SmartInspection
   if (props.dataFB && Object.keys(props.dataFB).length > 0) {
     console.log('数据已加载:', props.dataFB)
     dataFBSetup.value = props.dataFB
+    // 计算
+    // dzzj.value.reduce((sum, item) => sum + item.properties.rank, 0)
     // initMap()
   }
 })
@@ -2695,8 +2726,8 @@ const layerStylefx = ref({
 // 光点
 const sourceUrlGD = ref('https://a.amap.com/Loca/static/loca-v2/demos/mock_data/gdp.json')
 // 光点真实测试
-import { dzrl } from './dzrl'
-const geoJsonYD = dzrl
+
+let geoJsonYD = ref({})
 //   ref({
 //   type: 'FeatureCollection',
 //   features: [
@@ -2800,13 +2831,15 @@ const layerStyleGD = ref({
   unit: 'px',
   radius: (index, f) => {
     const n = f.properties['rank']
-    return n / 50
+    return n / 80
   },
   color: (index, f) => {
-    const n = Math.min(7, ~~(f.properties['rank'] / 100))
+    const n = Math.min(7, ~~(f.properties['rank'] / 150))
+    // console.log('圆点123', n)
     return colorsGD[n]
   },
-  blurWidth: 15
+  blurWidth: 15,
+  borderWidth: 8
 })
 </script>
 <style lang="less" scoped>

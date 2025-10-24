@@ -620,11 +620,11 @@ const optionsrq = [
 const options3 = [
   {
     value: '1',
-    label: '运营商'
+    label: '电站'
   },
   {
     value: '2',
-    label: '电站'
+    label: '运营商'
   }
 ]
 const options4 = [
