@@ -1,11 +1,12 @@
 <template>
   <div class="rightTwo">
     <div class="text1">
-      故障运营商排名<el-tooltip class="box-item" effect="dark" content="24小时" placement="right">
+      运营商故障率排行
+      <!-- <el-tooltip class="box-item" effect="dark" content="24小时" placement="right">
         <el-icon :size="20">
           <QuestionFilled />
         </el-icon>
-      </el-tooltip>
+      </el-tooltip> -->
     </div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
@@ -24,11 +25,11 @@ const imgList = [
   '//img.isqqw.com/profile/upload/2023/10/25/4e93cf77-ca50-4cfd-862f-513be3479112.png'
 ]
 const data = [
-  { name: '特来电', value: 649, num: 649 },
-  { name: '国网', value: 522, num: 522 },
-  { name: '星星充电', value: 412, num: 412 },
-  { name: '科耐新能源', value: 382, num: 382 },
-  { name: '小桔新能源', value: 355, num: 355 }
+  { name: '特来电', value: 3, num: 3 },
+  { name: '国网', value: 2.4, num: 2.4 },
+  { name: '星星充电', value: 2.1, num: 2.1 },
+  { name: '科耐新能源', value: 1.5, num: 1.5 },
+  { name: '小桔新能源', value: 0.8, num: 0.8 }
 ]
 // y轴数据
 const ydata = data.map((item) => item.name)
@@ -46,7 +47,7 @@ const getChart = () => {
         color: 'rgba(255, 255, 255, 1)'
       },
       formatter: function (data) {
-        return data.name + '数量：' + data.data.num
+        return data.name + '：' + data.data.num + '%'
       }
     },
     grid: {
@@ -134,7 +135,7 @@ const getChart = () => {
         splitLine: 'none',
         axisTick: 'none',
         axisLine: 'none',
-        data: data.map((item) => item.value + '个'),
+        data: data.map((item) => item.value + '%'),
         inverse: true,
         axisLabel: {
           show: true,
@@ -192,7 +193,7 @@ const getChart = () => {
           }
         },
 
-        data: [100, 100, 100, 100, 100]
+        data: [10, 10, 10, 10, 10]
       },
       {
         name: '',

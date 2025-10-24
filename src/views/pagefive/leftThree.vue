@@ -1,6 +1,6 @@
 <template>
   <div class="leftThree">
-    <div class="text1">各区县故障排名</div>
+    <div class="text1">各区县故障率排名</div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
 </template>
@@ -11,8 +11,8 @@ import { onMounted, ref } from 'vue'
 // reqPeriodDurationCount
 import { reqAreaRankByFault } from '@/api/pagefive'
 //
-const data1 = [58695, 46985, 42153, 40256, 38965, 29865, 58695, 46985]
-const data2 = [94901, 42017, 41236, 38258, 37578, 34224, 27198, 23248, 21275, 18962]
+const data1 = [2.9, 2.8, 2.5, 2.5, 2.4, 2.1, 2, 1.5, 1.2, 0.4]
+const data2 = [2.9, 2.8, 2.5, 2.5, 2.4, 2.1, 2, 1.5, 1.2, 0.4]
 const xData = [
   '历城区',
   '槐荫区',
@@ -104,7 +104,7 @@ const getChart = () => {
       trigger: 'axis',
       formatter: (params) => {
         // console.log(params, '参数')
-        return `${params[0].axisValue}: ${params[0].value} `
+        return `${params[0].axisValue}: ${params[0].value}% `
       },
       axisPointer: {
         type: 'cross',
@@ -129,7 +129,7 @@ const getChart = () => {
     },
     yAxis: {
       type: 'value',
-      name: '单位(元)',
+      name: '-',
       nameTextStyle: {
         color: '#fff',
         fontSize: 12

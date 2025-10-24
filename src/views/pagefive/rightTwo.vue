@@ -1,6 +1,6 @@
 <template>
   <div class="rightTwo">
-    <div class="text1">故障电站排名</div>
+    <div class="text1">电站故障率排名</div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
 </template>
@@ -10,11 +10,14 @@ import * as echarts from 'echarts'
 import { onMounted, ref } from 'vue'
 import { reqStationTopDataByFault } from '@/api/pagefive'
 let Echarts = ref(null)
-const sxnja = [91813, 37543, 37328, 31274, 27199, 21669, 21275, 18180, 15001, 12826]
+const sxnja = [3.1, 2.8, 2.8, 2.6, 2.4, 2.1, 1.7, 1.4, 1, 0.3]
+// [3.1, 2.8, 2.8, 2.6, 2.4, 2.1, 1.7, 1.4, 1, 0.3]
 const minNumber = 90
 const minArray = []
 sxnja.map((value) => {
-  minArray.push(parseFloat((value - minNumber).toFixed(2)))
+  // minArray.push(parseFloat((value - minNumber).toFixed(2)))
+  minArray.push(parseFloat(value))
+  // console.log(value - minNumber, value, minNumber, 'ppppppppppp')
 })
 console.log(minArray)
 let xaxisData = [
@@ -68,7 +71,7 @@ const getChart = () => {
     },
     tooltip: {
       valueFormatter: function (value) {
-        return value + minNumber
+        return value + '%'
       }
     },
     grid: {
@@ -113,7 +116,7 @@ const getChart = () => {
         // min: function (value) {
         //   return value.min*0.9;
         // },
-        name: '单位(个)',
+        // name: '单位(个)',
         nameTextStyle: {
           color: '#fff',
           fontSize: 12
@@ -151,13 +154,7 @@ const getChart = () => {
     ],
     series: [
       // 背景系列
-      {
-        type: 'bar',
-        itemStyle: { color: 'rgba(21,136,209,0.2)' },
-        barGap: '-100%',
-        data: [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100]
-        // 其他配置...
-      },
+
       {
         name: '-',
         showBackground: true,
