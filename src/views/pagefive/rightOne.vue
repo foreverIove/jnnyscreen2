@@ -1,7 +1,7 @@
 <template>
   <div class="rightTwo">
     <div class="text1">
-      运营商故障率排行
+      运营商故障率排名
       <!-- <el-tooltip class="box-item" effect="dark" content="24小时" placement="right">
         <el-icon :size="20">
           <QuestionFilled />
