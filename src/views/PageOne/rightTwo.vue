@@ -118,7 +118,7 @@ const getChart = () => {
 
   const myChart = echarts.init(Echarts.value)
   const option = {
-    backgroundColor: '#131D25',
+    backgroundColor: '#061B31',
     tooltip: {
       trigger: 'item',
       formatter: (params) => {

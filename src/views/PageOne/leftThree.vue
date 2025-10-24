@@ -1,6 +1,13 @@
 <template>
   <div class="leftThree">
-    <div class="text1">各区县充电终端数量</div>
+    <div class="text1">
+      各区县排行
+      <div style="width: 100px; height: 30px; float: right; margin-right: 20px">
+        <el-select v-model="value" class="m-2" placeholder="请选择">
+          <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </div>
+    </div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
 </template>
@@ -263,6 +270,26 @@ const getData = async () => {
     getChart()
   }
 }
+const value = ref('1')
+
+const options2 = [
+  {
+    value: '1',
+    label: '终端数量'
+  },
+  {
+    value: '2',
+    label: '容量'
+  },
+  {
+    value: '3',
+    label: '充电量'
+  },
+  {
+    value: '4',
+    label: '利用率'
+  }
+]
 onMounted(() => {
   getData()
   setTimeout(() => {
@@ -270,8 +297,29 @@ onMounted(() => {
   }, 500)
 })
 </script>
-
+<style>
+.el-scrollbar__wrap {
+  background: #051a32 !important;
+}
+</style>
 <style lang="less" scoped>
+/deep/.el-select__placeholder {
+  color: #fff !important;
+}
+.el-select-dropdown__item {
+  color: #fff;
+}
+.is-hovering {
+  background: rgba(255, 255, 255, 0.5);
+}
+/deep/ .el-select-dropdown__wrap {
+  // background: #206ca7 !important;
+}
+
+/deep/ .el-select__wrapper {
+  background: #051a32 !important;
+  // color: #fff;
+}
 .chart-flow {
   height: 100%;
   width: 100%;

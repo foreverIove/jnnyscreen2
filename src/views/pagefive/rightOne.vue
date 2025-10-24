@@ -1,6 +1,12 @@
 <template>
   <div class="rightTwo">
-    <div class="text1">故障运营商排名</div>
+    <div class="text1">
+      故障运营商排名<el-tooltip class="box-item" effect="dark" content="24小时" placement="right">
+        <el-icon :size="20">
+          <QuestionFilled />
+        </el-icon>
+      </el-tooltip>
+    </div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
 </template>
@@ -18,11 +24,11 @@ const imgList = [
   '//img.isqqw.com/profile/upload/2023/10/25/4e93cf77-ca50-4cfd-862f-513be3479112.png'
 ]
 const data = [
-  { name: '特来电', value: 94901, num: 94901 },
-  { name: '国网', value: 42017, num: 42017 },
-  { name: '星星充电', value: 41236, num: 41236 },
-  { name: '科耐新能源', value: 38258, num: 38258 },
-  { name: '小桔新能源', value: 37578, num: 37578 }
+  { name: '特来电', value: 649, num: 649 },
+  { name: '国网', value: 522, num: 522 },
+  { name: '星星充电', value: 412, num: 412 },
+  { name: '科耐新能源', value: 382, num: 382 },
+  { name: '小桔新能源', value: 355, num: 355 }
 ]
 // y轴数据
 const ydata = data.map((item) => item.name)
@@ -264,6 +270,10 @@ onMounted(() => {
 </script>
 
 <style lang="less" scoped>
+svg {
+  position: relative;
+  top: 4px;
+}
 .chart-flow {
   height: 80%;
   width: 100%;

@@ -1968,8 +1968,8 @@ watch(listpoint, () => {
   console.log('数据变了')
   // 重新渲染地图
 })
-// const mapStyle = 'amap://styles/c0a31574ea702fcdff06bc2bc03badcd'
-const mapStyle = 'amap://styles/dark'
+const mapStyle = 'amap://styles/c0a31574ea702fcdff06bc2bc03badcd'
+// const mapStyle = 'amap://styles/dark'
 const zoom = zoompinia
 let center1 = center
 let lnglatInfo = ref([119, 36.4])

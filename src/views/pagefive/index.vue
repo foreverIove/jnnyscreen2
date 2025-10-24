@@ -46,7 +46,7 @@
                   margin-left: 10px;
                 ">
                 <div style="">离线终端数量</div>
-                <div style="font-size: 35px">3922</div>
+                <div style="font-size: 35px">22</div>
               </div>
             </div>
           </div>
@@ -74,7 +74,7 @@
                   margin-left: 10px;
                 ">
                 <div style="">故障终端数量</div>
-                <div style="font-size: 35px">773</div>
+                <div style="font-size: 35px">13</div>
               </div>
             </div>
           </div>
@@ -110,7 +110,7 @@
                   margin-left: 10px;
                 ">
                 <div style="">异常订单数量</div>
-                <div style="font-size: 35px">0</div>
+                <div style="font-size: 35px">17</div>
               </div>
             </div>
           </div>
@@ -140,7 +140,7 @@
               margin-left: 10px;
             ">
             <div style="">在线终端数量</div>
-            <div style="font-size: 35px">9600</div>
+            <div style="font-size: 35px">26320</div>
           </div>
         </div>
         <div style="width: 800px; height: 74px; margin: 0 auto; display: flex">
@@ -166,7 +166,7 @@
                   margin-left: 10px;
                 ">
                 <div style="">警告次数</div>
-                <div style="font-size: 35px">1</div>
+                <div style="font-size: 35px">12</div>
               </div>
             </div>
           </div>

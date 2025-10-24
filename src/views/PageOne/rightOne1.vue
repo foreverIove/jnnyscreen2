@@ -1,12 +1,17 @@
 <template>
   <div class="leftThree">
     <div class="text1" style="color: #fff">
-      电站日均单枪充电量
+      电站日均充电量
       <el-tooltip class="box-item" effect="dark" content="月充电量/终端数量/30天" placement="right">
         <el-icon :size="20">
           <QuestionFilled />
         </el-icon>
       </el-tooltip>
+      <div style="width: 75px; height: 30px; float: right; margin-right: 50px">
+        <el-select v-model="value" class="m-2" placeholder="请选择" @change="getData()">
+          <el-option v-for="item in options2" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </div>
     </div>
     <div class="chart-flow" ref="Echarts"></div>
   </div>
@@ -214,7 +219,17 @@ let data = ref([
   [30.0, 3.0, 70465.38],
   [30.0, 4.0, 26981.8]
 ])
-
+const value = ref('1')
+const options2 = [
+  {
+    value: '1',
+    label: '单枪'
+  },
+  {
+    value: '2',
+    label: '单站'
+  }
+]
 // ----------------------------
 const getData = async () => {
   // let res = await reqThirtyDaysEnergyPeriodData()
@@ -230,7 +245,7 @@ const getChart = () => {
   let myChart = echarts.init(Echarts.value)
 
   const option = {
-    backgroundColor: '#03213D',
+    // backgroundColor: '#03213D',
     title: [
       {
         // text: 'PM2.5',
@@ -276,7 +291,7 @@ const getChart = () => {
         top: '5%'
       }
     ],
-    backgroundColor: '#03213D',
+    // backgroundColor: '#03213D',
     tooltip: {
       trigger: 'axis',
       backgroundColor: 'rgba(0,0,0,.6)',
@@ -306,12 +321,13 @@ const getChart = () => {
         borderColor: 'rgb(19, 63, 100)', // 边框颜色
         showDetail: false, //是否显示detail，即拖拽时候显示详细数值信息
         startValue: 0,
-        endValue: 5,
+        endValue: 8,
         filterMode: 'empty',
         width: '50%', //滚动条高度
         height: 8, //滚动条显示位置
         left: 'center',
         zoomLoxk: true, // 是否锁定选择区域（或叫做数据窗口）的大小
+        zoomLock: true,
         handleSize: 0, //控制手柄的尺寸
         bottom: 3 // dataZoom-slider组件离容器下侧的距离
       },
@@ -451,7 +467,7 @@ const getChart = () => {
       {
         name: '-',
         type: 'bar',
-        barWidth: 30,
+        barWidth: 15,
         itemStyle: {
           // color: new graphic.LinearGradient(0, 0, 0, 1, [
           //    {
@@ -504,8 +520,29 @@ onMounted(() => {
   })
 })
 </script>
-
+<style>
+.el-scrollbar__wrap {
+  background: #051a32 !important;
+}
+</style>
 <style lang="less" scoped>
+/deep/.el-select__placeholder {
+  color: #fff !important;
+}
+.el-select-dropdown__item {
+  color: #fff;
+}
+.is-hovering {
+  background: rgba(255, 255, 255, 0.5);
+}
+/deep/ .el-select-dropdown__wrap {
+  // background: #206ca7 !important;
+}
+
+/deep/ .el-select__wrapper {
+  background: #051a32 !important;
+  // color: #fff;
+}
 svg {
   position: relative;
   top: 4px;

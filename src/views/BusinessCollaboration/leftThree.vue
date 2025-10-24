@@ -103,7 +103,7 @@ const getChart = () => {
         // min: function (value) {
         //   return value.min*0.9;
         // },
-        name: '单位(kWh)',
+        name: '单位(个)',
         nameTextStyle: {
           color: '#fff',
           fontSize: 12

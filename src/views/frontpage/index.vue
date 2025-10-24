@@ -48,12 +48,12 @@
           </el-select>
         </div>
         <div style="width: 172px; height: 40px; margin-right: 20px; margin-top: 7px">
-          <el-select v-model="value2" class="m-2" placeholder="请选择">
+          <el-select clearable v-model="value2" class="m-2" placeholder="请选择">
             <el-option v-for="item in options3" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
-        <div style="width: 172px; height: 40px; margin-right: 20px; margin-top: 7px">
-          <el-select v-model="value3" class="m-2" placeholder="请选择">
+        <div v-if="value2 == 1" style="width: 172px; height: 40px; margin-right: 20px; margin-top: 7px">
+          <el-select clearable v-model="value3" class="m-2" placeholder="请选择">
             <el-option v-for="item in options4" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
@@ -620,21 +620,21 @@ const optionsrq = [
 const options3 = [
   {
     value: '1',
-    label: '电站'
+    label: '运营商'
   },
   {
     value: '2',
-    label: '运营商'
+    label: '电站'
   }
 ]
 const options4 = [
   {
     value: '1',
-    label: '达达充电站'
+    label: '济南能源'
   },
   {
     value: '2',
-    label: '舜德路充电站'
+    label: '特来电'
   }
 ]
 const options5 = [

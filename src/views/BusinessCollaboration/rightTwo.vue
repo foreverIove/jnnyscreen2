@@ -275,7 +275,7 @@ const getChart = () => {
     yAxis: [
       {
         type: 'value',
-        name: '单位(个)',
+        name: '单位(元)',
         nameTextStyle: {
           color: '#fff',
           fontSize: 12

@@ -27,13 +27,13 @@
           <div style="width: 50%; color: #fff; font-size: 20px; padding-top: 10px">
             <div style="width: 100%; text-align: center">总充电量</div>
             <div style="width: 100%; text-align: center">
-              <count-to :start="10000" :end="1387462252" :autoPlay="true" :duration="2000" style="color: #41ddff" />
+              <count-to :start="10000" :end="1387462252" :autoPlay="true" :duration="2000" style="color: #41ddff" />kWh
             </div>
           </div>
           <div style="width: 50%; color: #fff; font-size: 20px; padding-top: 10px">
             <div style="width: 100%; text-align: center">总容量</div>
             <div style="width: 100%; text-align: center">
-              <count-to :start="10000" :end="2511" :autoPlay="true" :duration="2000" style="color: #41ddff" />
+              <count-to :start="10000" :end="1202072" :autoPlay="true" :duration="2000" style="color: #41ddff" />kWh
             </div>
           </div>
         </div>

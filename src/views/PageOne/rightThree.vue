@@ -298,7 +298,7 @@ const getChart = () => {
       splitLine: {
         show: true,
         lineStyle: {
-          color: '#E8E8E8'
+          color: 'rgba(255,255,255,0.2)'
         }
       },
       axisLine: {
